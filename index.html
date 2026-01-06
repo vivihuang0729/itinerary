@@ -1,1145 +1,1924 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>芝加哥之旅 1/21-31</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #e74c3c;
-            --flight: #3498db;
-            --friend: #e67e22;
-            --show: #9b59b6;
-            --info: #009688; /* Teal for Info */
-            --budget: #2e7d32; /* Green for Budget */
-            --bg: #f8f9fa;
-            --card-bg: #ffffff;
-            --text: #333;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-            padding-bottom: 40px;
-        }
-        
-        /* COVER PAGE STYLES */
-        .cover-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            transition: opacity 0.6s ease-in-out, visibility 0.6s;
-        }
-        .cover-page.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        .cover-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
-            line-height: 1.2;
-        }
-        .cover-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            margin-bottom: 40px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .cover-icon {
-            font-size: 4rem;
-            margin-bottom: 50px;
-            animation: float 3s ease-in-out infinite;
-        }
-        .cover-btn {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .cover-btn:hover {
-            background: white;
-            color: #2c3e50;
-            transform: translateY(-2px);
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>芝加哥之旅 1/21-31</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #e74c3c;
+      --flight: #3498db;
+      --friend: #e67e22;
+      --show: #9b59b6;
+      --info: #009688; /* Teal for Info */
+      --budget: #2e7d32; /* Green for Budget */
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #333;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      padding-bottom: 40px;
+    }
 
-        /* --- MAIN APP STYLES --- */
-        header {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative; 
-        }
-        h1 { margin: 0; font-size: 1.5rem; letter-spacing: 0.5px; }
-        p.subtitle { margin: 8px 0 0; opacity: 0.9; font-size: 0.9rem; font-weight: 300; }
-        
-        /* Sticky Top Nav Bar */
-        .nav-bar {
-            position: sticky;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            display: flex;
-            overflow-x: auto;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            z-index: 1000;
-            padding: 0;
-            border-bottom: 1px solid #eee;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .nav-bar::-webkit-scrollbar { display: none; }
-        
-        .nav-item {
-            flex: 0 0 auto;
-            padding: 12px 16px;
-            min-width: 50px;
-            text-align: center;
-            color: #aab7c4;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 3px solid transparent;
-        }
-        .nav-item.active { 
-            color: var(--primary); 
-            border-bottom-color: var(--primary);
-            background: #f8f9fa;
-        }
-        .nav-item.info-tab.active { color: var(--info); border-bottom-color: var(--info); }
-        .nav-item.budget-tab.active { color: var(--budget); border-bottom-color: var(--budget); }
-        
-        .nav-date { font-size: 15px; margin-bottom: 2px; font-weight: 700; }
-        .nav-day { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    /* COVER PAGE STYLES */
+    .cover-page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      transition: opacity 0.6s ease-in-out, visibility 0.6s;
+    }
+    .cover-page.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .cover-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+    .cover-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.8;
+      margin-bottom: 40px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .cover-icon {
+      font-size: 4rem;
+      margin-bottom: 50px;
+      animation: float 3s ease-in-out infinite;
+    }
+    .cover-btn {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .cover-btn:hover {
+      background: white;
+      color: #2c3e50;
+      transform: translateY(-2px);
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
 
-        /* Cards */
-        .day-card, .info-card, .budget-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            overflow: hidden;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .active { display: block; }
+    /* --- MAIN APP STYLES --- */
+    header {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    h1 { margin: 0; font-size: 1.5rem; letter-spacing: 0.5px; }
+    p.subtitle { margin: 8px 0 0; opacity: 0.9; font-size: 0.9rem; font-weight: 300; }
 
-        .day-header {
-            background: #f1f2f6;
-            padding: 15px 20px;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-        }
-        .header-info { background: #e0f2f1; color: var(--info); }
-        .header-budget { background: #e8f5e9; color: var(--budget); }
-        
-        .date-badge {
-            background: var(--primary);
-            color: white;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-        }
+    /* Sticky Top Nav Bar */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      display: flex;
+      overflow-x: auto;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 0;
+      border-bottom: 1px solid #eee;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-bar::-webkit-scrollbar { display: none; }
 
-        /* Info Section Styles */
-        .info-section { padding: 20px; }
-        .info-title {
-            font-size: 1.1rem;
-            color: var(--info);
-            border-left: 4px solid var(--info);
-            padding-left: 10px;
-            margin: 25px 0 10px 0;
-            font-weight: 700;
-        }
-        .info-title:first-child { margin-top: 0; }
-        
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        .check-icon { color: var(--info); margin-right: 8px; font-weight: bold; }
+    .nav-item {
+      flex: 0 0 auto;
+      padding: 12px 16px;
+      min-width: 50px;
+      text-align: center;
+      color: #aab7c4;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 3px solid transparent;
+      user-select: none;
+    }
+    .nav-item.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: #f8f9fa;
+    }
+    .nav-item.info-tab.active { color: var(--info); border-bottom-color: var(--info); }
+    .nav-item.budget-tab.active { color: var(--budget); border-bottom-color: var(--budget); }
+    .nav-item.expense-tab.active { color: #1e40af; border-bottom-color: #1e40af; }
 
-        .qa-box { background: #f4fcfc; border: 1px solid #b2dfdb; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
-        .qa-q { font-weight: 700; color: #2c3e50; margin-bottom: 4px; font-size: 0.9rem; }
-        .qa-a { color: #00796b; font-weight: 600; font-size: 1rem; }
-        .qa-tip { font-size: 0.8rem; color: #666; margin-top: 4px; font-style: italic; }
+    .nav-date { font-size: 15px; margin-bottom: 2px; font-weight: 700; }
+    .nav-day { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .weather-warning { background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px; border: 1px solid #ffcdd2; }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px 15px;
+    }
 
-        /* Budget Styles */
-        .budget-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
-        .budget-row:last-child { border-bottom: none; }
-        .budget-cat { font-weight: 600; color: #555; }
-        .budget-amt { font-weight: 700; color: #333; }
-        .budget-note { font-size: 0.8rem; color: #888; margin-top: 2px; }
-        .budget-total { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; }
-        .budget-total-amt { font-size: 1.5rem; font-weight: 800; color: var(--budget); }
-        .budget-tip-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 0.9rem; color: #e65100; }
-        
-        .detail-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-        .detail-table th { text-align: left; background: #f1f8e9; padding: 5px; color: var(--budget); }
-        .detail-table td { padding: 5px; border-bottom: 1px solid #eee; }
-        .detail-table td:last-child { text-align: right; font-weight: bold; }
-        .detail-section-title { margin-top: 15px; font-weight: bold; color: #555; border-left: 3px solid var(--budget); padding-left: 5px; }
+    /* Cards */
+    .day-card, .info-card, .budget-card, .expense-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      overflow: hidden;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
 
-        /* Timeline */
-        .timeline { padding: 20px; }
-        .event { position: relative; padding-left: 25px; margin-bottom: 25px; border-left: 2px solid #e0e0e0; }
-        .event:last-child { margin-bottom: 0; border-left-color: transparent; }
-        .event::before { content: ''; position: absolute; left: -6px; top: 6px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 0 2px var(--accent); }
-        
-        .event.flight { border-left-color: var(--flight); }
-        .event.flight::before { background: var(--flight); box-shadow: 0 0 0 2px var(--flight); }
-        .event.flight .activity, .event.flight .map-link { color: var(--flight); }
-        
-        .event.friend { border-left-color: var(--friend); }
-        .event.friend::before { background: var(--friend); box-shadow: 0 0 0 2px var(--friend); }
-        .event.friend .activity, .event.friend .map-link { color: var(--friend); }
-        
-        .event.show { border-left-color: var(--show); }
-        .event.show::before { background: var(--show); box-shadow: 0 0 0 2px var(--show); }
-        .event.show .activity, .event.show .map-link { color: var(--show); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .time { font-size: 0.85rem; color: #888; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
-        .activity { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: #2c3e50; display: flex; align-items: flex-start; }
-        .details { font-size: 0.95rem; color: #555; line-height: 1.5; }
-        .flight-path { font-size: 0.85rem; background: #f0f7ff; padding: 8px; border-radius: 6px; margin-top: 5px; color: #444; border: 1px dashed #3498db; }
-        .friend-path { background: #fff3e0; border-color: #e67e22; }
-        .tags { margin-top: 8px; }
-        .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 5px; }
-        .tag-loc { background: #e1f5fe; color: #0288d1; }
-        .tag-food { background: #fff3e0; color: #ef6c00; }
-        .tag-flight { background: #e3f2fd; color: #1976d2; }
-        .tag-friend { background: #ffe0b2; color: #e65100; }
-        .tag-imp { background: #ffebee; color: #c62828; }
-        .tag-show { background: #f3e5f5; color: #8e24aa; }
-        .map-link { text-decoration: none; color: inherit; border-bottom: 1px dotted rgba(0,0,0,0.3); }
-        .icon { display: inline-block; width: 16px; height: 16px; margin-right: 8px; flex-shrink: 0; margin-top: 4px; fill: currentColor; }
+    .active { display: block; }
 
-        /* NEXT BUTTON STYLES */
-        .nav-buttons {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: flex-end;
-        }
-        .btn-next {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-        }
-        .btn-next:hover { background-color: #34495e; }
-        .btn-prev {
-            background-color: transparent;
-            color: #999;
-            border: 1px solid #ddd;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-right: 10px;
-        }
+    .day-header {
+      background: #f1f2f6;
+      padding: 15px 20px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
+    .header-info { background: #e0f2f1; color: var(--info); }
+    .header-budget { background: #e8f5e9; color: var(--budget); }
+    .header-expense { background: #e0e7ff; color: #1e40af; }
 
-    </style>
+    .date-badge {
+      background: var(--primary);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+
+    /* Info Section Styles */
+    .info-section { padding: 20px; }
+    .info-title {
+      font-size: 1.1rem;
+      color: var(--info);
+      border-left: 4px solid var(--info);
+      padding-left: 10px;
+      margin: 25px 0 10px 0;
+      font-weight: 700;
+    }
+    .info-title:first-child { margin-top: 0; }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .check-icon { color: var(--info); margin-right: 8px; font-weight: bold; }
+
+    .qa-box { background: #f4fcfc; border: 1px solid #b2dfdb; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .qa-q { font-weight: 700; color: #2c3e50; margin-bottom: 4px; font-size: 0.9rem; }
+    .qa-a { color: #00796b; font-weight: 600; font-size: 1rem; }
+    .qa-tip { font-size: 0.8rem; color: #666; margin-top: 4px; font-style: italic; }
+
+    .weather-warning { background: #ffebee; color: #c62828; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px; border: 1px solid #ffcdd2; }
+
+    /* Budget Styles */
+    .budget-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
+    .budget-row:last-child { border-bottom: none; }
+    .budget-cat { font-weight: 600; color: #555; }
+    .budget-amt { font-weight: 700; color: #333; }
+    .budget-note { font-size: 0.8rem; color: #888; margin-top: 2px; }
+    .budget-total { background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; }
+    .budget-total-amt { font-size: 1.5rem; font-weight: 800; color: var(--budget); }
+    .budget-tip-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 0.9rem; color: #e65100; }
+
+    .detail-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+    .detail-table th { text-align: left; background: #f1f8e9; padding: 5px; color: var(--budget); }
+    .detail-table td { padding: 5px; border-bottom: 1px solid #eee; }
+    .detail-table td:last-child { text-align: right; font-weight: bold; }
+    .detail-section-title { margin-top: 15px; font-weight: bold; color: #555; border-left: 3px solid var(--budget); padding-left: 5px; }
+
+    /* Timeline */
+    .timeline { padding: 20px; }
+    .event { position: relative; padding-left: 25px; margin-bottom: 25px; border-left: 2px solid #e0e0e0; }
+    .event:last-child { margin-bottom: 0; border-left-color: transparent; }
+    .event::before { content: ''; position: absolute; left: -6px; top: 6px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; border: 2px solid white; box-shadow: 0 0 0 2px var(--accent); }
+
+    .event.flight { border-left-color: var(--flight); }
+    .event.flight::before { background: var(--flight); box-shadow: 0 0 0 2px var(--flight); }
+    .event.flight .activity, .event.flight .map-link { color: var(--flight); }
+
+    .event.friend { border-left-color: var(--friend); }
+    .event.friend::before { background: var(--friend); box-shadow: 0 0 0 2px var(--friend); }
+    .event.friend .activity, .event.friend .map-link { color: var(--friend); }
+
+    .event.show { border-left-color: var(--show); }
+    .event.show::before { background: var(--show); box-shadow: 0 0 0 2px var(--show); }
+    .event.show .activity, .event.show .map-link { color: var(--show); }
+
+    .time { font-size: 0.85rem; color: #888; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
+    .activity { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: #2c3e50; display: flex; align-items: flex-start; }
+    .details { font-size: 0.95rem; color: #555; line-height: 1.5; }
+    .flight-path { font-size: 0.85rem; background: #f0f7ff; padding: 8px; border-radius: 6px; margin-top: 5px; color: #444; border: 1px dashed #3498db; }
+    .friend-path { background: #fff3e0; border-color: #e67e22; }
+    .tags { margin-top: 8px; }
+    .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 5px; }
+    .tag-loc { background: #e1f5fe; color: #0288d1; }
+    .tag-food { background: #fff3e0; color: #ef6c00; }
+    .tag-flight { background: #e3f2fd; color: #1976d2; }
+    .tag-friend { background: #ffe0b2; color: #e65100; }
+    .tag-imp { background: #ffebee; color: #c62828; }
+    .tag-show { background: #f3e5f5; color: #8e24aa; }
+    .map-link { text-decoration: none; color: inherit; border-bottom: 1px dotted rgba(0, 0, 0, 0.3); }
+    .icon { display: inline-block; width: 16px; height: 16px; margin-right: 8px; flex-shrink: 0; margin-top: 4px; fill: currentColor; }
+
+    /* NEXT BUTTON STYLES */
+    .nav-buttons {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-next {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+    }
+    .btn-next:hover { background-color: #34495e; }
+    .btn-prev {
+      background-color: transparent;
+      color: #999;
+      border: 1px solid #ddd;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    /* ---------------- EXPENSE TAB (embedded, scoped) ---------------- */
+    .expense-wrap {
+      background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #0f172a);
+      color: #fff;
+      padding: 14px;
+    }
+    .exp-container { max-width: 72rem; margin: 0 auto; }
+    .exp-card {
+      background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+      backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(100, 116, 139, 0.5);
+    }
+    .exp-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+    .exp-title { font-size: 1.5rem; font-weight: 800; margin: 0; }
+    .exp-subtitle { color: #cbd5e1; font-size: 0.85rem; margin-top: 0.25rem; }
+    .exp-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.6rem;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+    .exp-btn-primary {
+      background: linear-gradient(to right, #3b82f6, #6366f1);
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .exp-btn-primary:hover { background: linear-gradient(to right, #2563eb, #4f46e5); }
+    .exp-btn-secondary { background: #475569; color: #e2e8f0; }
+    .exp-btn-secondary:hover { background: #334155; }
+    .exp-hidden { display: none; }
+
+    .exp-grid { display: grid; gap: 0.8rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+    .exp-stat {
+      padding: 0.9rem;
+      border-radius: 0.85rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+    }
+    .exp-stat-blue { background: linear-gradient(to bottom right, #2563eb, #06b6d4); }
+    .exp-stat-green { background: linear-gradient(to bottom right, #059669, #14b8a6); }
+    .exp-stat-purple { background: linear-gradient(to bottom right, #7c3aed, #a855f7); }
+    .exp-stat-red { background: linear-gradient(to bottom right, #e11d48, #dc2626); }
+
+    .exp-stat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+    .exp-stat-label { font-size: 0.85rem; opacity: 0.95; }
+    .exp-stat-value { font-size: 1.6rem; font-weight: 800; }
+
+    .exp-form-grid { display: grid; gap: 0.8rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 0.8rem; }
+    .exp-form-group { display: flex; flex-direction: column; }
+    .exp-form-group label { font-size: 0.85rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.25rem; }
+    .exp-form-group input, .exp-form-group select {
+      padding: 0.55rem;
+      border-radius: 0.55rem;
+      border: 1px solid #475569;
+      background: rgba(51, 65, 85, 0.5);
+      color: white;
+      font-size: 0.9rem;
+    }
+    .exp-form-group input:focus, .exp-form-group select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    }
+
+    .exp-progress-item { margin-bottom: 0.8rem; }
+    .exp-progress-head { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem; color: #e2e8f0; }
+    .exp-progress-bar { width: 100%; height: 0.7rem; background: rgba(51, 65, 85, 0.5); border-radius: 9999px; overflow: hidden; }
+    .exp-progress-fill { height: 100%; transition: width 0.5s; background: linear-gradient(to right, #10b981, #14b8a6); }
+    .exp-progress-fill.yellow { background: linear-gradient(to right, #f59e0b, #eab308); }
+    .exp-progress-fill.red { background: linear-gradient(to right, #fb7185, #dc2626); }
+
+    .exp-expense-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .exp-item {
+      border: 1px solid rgba(100, 116, 139, 0.5);
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 0.65rem;
+      padding: 0.9rem;
+    }
+    .exp-item:hover { background: rgba(51, 65, 85, 0.4); }
+
+    .exp-item-row { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .exp-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.35rem; }
+    .exp-tag {
+      padding: 0.22rem 0.45rem;
+      border-radius: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid rgba(100, 116, 139, 0.5);
+      color: #cbd5e1;
+      background: rgba(51, 65, 85, 0.5);
+    }
+    .exp-tag.blue { color: #93c5fd; border-color: rgba(59, 130, 246, 0.5); background: rgba(30, 58, 138, 0.5); }
+    .exp-tag.cyan { color: #67e8f9; border-color: rgba(6, 182, 212, 0.5); background: rgba(22, 78, 99, 0.5); }
+
+    .exp-name { font-weight: 700; color: #fff; margin-bottom: 0.2rem; }
+    .exp-notes { font-size: 0.85rem; color: #94a3b8; }
+
+    .exp-right { display: flex; align-items: center; gap: 0.75rem; }
+    .exp-amount { text-align: right; }
+    .exp-amount-main { font-weight: 900; color: #fff; }
+    .exp-amount-sub { font-size: 0.75rem; color: #94a3b8; }
+
+    .exp-actions { display: flex; gap: 0.25rem; }
+    .exp-icon-btn {
+      background: transparent;
+      border: none;
+      padding: 0.4rem 0.5rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    .exp-icon-btn.edit { color: #60a5fa; }
+    .exp-icon-btn.edit:hover { background: rgba(30, 58, 138, 0.3); }
+    .exp-icon-btn.del { color: #fb7185; }
+    .exp-icon-btn.del:hover { background: rgba(136, 19, 55, 0.3); }
+
+    .exp-empty { text-align: center; padding: 2.5rem 1rem; color: #94a3b8; }
+    .exp-empty .big { font-size: 2.6rem; opacity: 0.6; margin-bottom: 0.6rem; }
+
+    .exp-footer { text-align: center; color: #94a3b8; font-size: 0.85rem; margin-top: 0.8rem; }
+
+    .exp-settle-box {
+      background: rgba(2, 6, 23, 0.35);
+      border: 1px solid rgba(99, 102, 241, 0.45);
+      padding: 0.9rem;
+      border-radius: 0.9rem;
+      margin-top: 0.6rem;
+      color: #e2e8f0;
+    }
+    .exp-settle-title { font-weight: 900; margin: 0 0 0.4rem 0; }
+    .exp-settle-line { font-size: 0.9rem; padding: 0.25rem 0; }
+
+    @media (max-width: 768px) {
+      .exp-item-row { flex-direction: column; }
+      .exp-right { width: 100%; justify-content: space-between; }
+    }
+  </style>
 </head>
-<body>
 
-<!-- COVER PAGE -->
-<div id="cover-page" class="cover-page">
-    <div class="cover-title">Yunyi's<br>Chicago Trip</div>
+<body>
+  <!-- COVER PAGE -->
+  <div id="cover-page" class="cover-page">
+    <div class="cover-title">Yunyi's<br />Chicago Trip</div>
     <div class="cover-subtitle">Jan 21 - Jan 31, 2026</div>
     <div class="cover-icon">❄️🏙️🍕</div>
     <button class="cover-btn" onclick="enterApp()">Start Journey</button>
-</div>
+  </div>
 
-<header>
+  <header>
     <h1>Yunyi's Chicago Trip</h1>
     <p class="subtitle">1/21 (WED) - 1/31 (SAT)</p>
-</header>
+  </header>
 
-<!-- STICKY TOP NAV -->
-<div class="nav-bar">
+  <!-- STICKY TOP NAV -->
+  <div class="nav-bar">
     <div class="nav-item info-tab" onclick="showPrep()">
-        <span class="nav-date">ⓘ</span><span class="nav-day">INFO</span>
+      <span class="nav-date">ⓘ</span><span class="nav-day">INFO</span>
     </div>
     <div class="nav-item budget-tab" onclick="showBudget()">
-        <span class="nav-date">$$$</span><span class="nav-day">BUDGET</span>
+      <span class="nav-date">$$$</span><span class="nav-day">BUDGET</span>
     </div>
     <div class="nav-item" onclick="showDay(1)">
-        <span class="nav-date">21</span><span class="nav-day">Wed</span>
+      <span class="nav-date">21</span><span class="nav-day">Wed</span>
     </div>
     <div class="nav-item" onclick="showDay(2)">
-        <span class="nav-date">22</span><span class="nav-day">Thu</span>
+      <span class="nav-date">22</span><span class="nav-day">Thu</span>
     </div>
     <div class="nav-item" onclick="showDay(3)">
-        <span class="nav-date">23</span><span class="nav-day">Fri</span>
+      <span class="nav-date">23</span><span class="nav-day">Fri</span>
     </div>
     <div class="nav-item" onclick="showDay(4)">
-        <span class="nav-date">24</span><span class="nav-day">Sat</span>
+      <span class="nav-date">24</span><span class="nav-day">Sat</span>
     </div>
     <div class="nav-item" onclick="showDay(5)">
-        <span class="nav-date">25</span><span class="nav-day">Sun</span>
+      <span class="nav-date">25</span><span class="nav-day">Sun</span>
     </div>
     <div class="nav-item" onclick="showDay(6)">
-        <span class="nav-date">26</span><span class="nav-day">Mon</span>
+      <span class="nav-date">26</span><span class="nav-day">Mon</span>
     </div>
     <div class="nav-item" onclick="showDay(7)">
-        <span class="nav-date">27</span><span class="nav-day">Tue</span>
+      <span class="nav-date">27</span><span class="nav-day">Tue</span>
     </div>
     <div class="nav-item" onclick="showDay(8)">
-        <span class="nav-date">28</span><span class="nav-day">Wed</span>
+      <span class="nav-date">28</span><span class="nav-day">Wed</span>
     </div>
     <div class="nav-item" onclick="showDay(9)">
-        <span class="nav-date">29</span><span class="nav-day">Thu</span>
+      <span class="nav-date">29</span><span class="nav-day">Thu</span>
     </div>
     <div class="nav-item" onclick="showDay(10)">
-        <span class="nav-date">30</span><span class="nav-day">Fri</span>
+      <span class="nav-date">30</span><span class="nav-day">Fri</span>
     </div>
     <div class="nav-item" onclick="showDay(11)">
-        <span class="nav-date">31</span><span class="nav-day">Sat</span>
+      <span class="nav-date">31</span><span class="nav-day">Sat</span>
     </div>
-</div>
+    <div class="nav-item expense-tab" onclick="showExpense()">
+      <span class="nav-date">💳</span><span class="nav-day">EXPENSE</span>
+    </div>
+  </div>
 
-<div class="container">
+  <div class="container">
 
     <!-- PREP / INFO CARD -->
     <div id="prep-card" class="info-card">
-        <div class="day-header header-info">
-            <span>行前準備 (Prep Guide)</span>
-            <span class="date-badge" style="background:var(--info)">Must Read</span>
+      <div class="day-header header-info">
+        <span>行前準備 (Prep Guide)</span>
+        <span class="date-badge" style="background: var(--info)">Must Read</span>
+      </div>
+      <div class="info-section">
+        <div class="weather-warning">
+          ❄️ <strong>極地氣候警報</strong><br />
+          氣溫 -5°C 至 -15°C。室內暖氣強，請務必採「洋蔥式穿搭」。
         </div>
-        <div class="info-section">
-            <div class="weather-warning">
-                ❄️ <strong>極地氣候警報</strong><br>
-                氣溫 -5°C 至 -15°C。室內暖氣強，請務必採「洋蔥式穿搭」。
-            </div>
-            
-            <div class="info-title">📋 必要文件 & 金錢</div>
-            <div class="checklist-item"><span class="check-icon">✓</span> 護照 (效期 > 6個月)</div>
-            <div class="checklist-item"><span class="check-icon">✓</span> ESTA 核准證明 (截圖/紙本)</div>
-            <div class="checklist-item"><span class="check-icon">✓</span> 住宿地址截圖：<br><strong>555 W Madison St, Chicago, IL 60661</strong></div>
-            <div class="checklist-item"><span class="check-icon">✓</span> 信用卡 (2張以上, 綁定 Apple Pay)</div>
-            <div class="checklist-item"><span class="check-icon">✓</span> 少量美金現鈔 ($1, $5 用於小費)</div>
 
-            <div class="info-title">👮‍♀️ 入境通關模擬 (CBP Interview)</div>
-            <div class="qa-box">
-                <div class="qa-q">Q: Purpose of visit? (目的)</div>
-                <div class="qa-a">A: Vacation and visiting friends.</div>
-            </div>
-            <div class="qa-box">
-                <div class="qa-q">Q: How long staying? (多久)</div>
-                <div class="qa-a">A: About 10 days. Leave on Jan 31st.</div>
-                <div class="qa-tip">Tip: 準備好回程機票證明</div>
-            </div>
-            <div class="qa-box">
-                <div class="qa-q">Q: Where staying? (住哪)</div>
-                <div class="qa-a">A: At my friend's apartment in West Loop.</div>
-                <div class="qa-tip">Tip: 出示地址 (555 W Madison St)</div>
-            </div>
-            <div class="qa-box">
-                <div class="qa-q">Q: Friend's job/status? (朋友身分)</div>
-                <div class="qa-a">A: She lives and studies (UIC) here. We are close friends from Taiwan.</div>
-                <div class="qa-tip">Tip: 說明朋友在 UIC 唸書</div>
-            </div>
-            <div class="qa-box">
-                <div class="qa-q">Q: Your occupation? (妳的職業)</div>
-                <div class="qa-a">A: I work as a piano teacher and pianist.</div>
-                <div class="qa-tip">Tip: 展現台灣工作穩定，一定會回國</div>
-            </div>
+        <div class="info-title">📋 必要文件 & 金錢</div>
+        <div class="checklist-item"><span class="check-icon">✓</span> 護照 (效期 &gt; 6個月)</div>
+        <div class="checklist-item"><span class="check-icon">✓</span> ESTA 核准證明 (截圖/紙本)</div>
+        <div class="checklist-item"><span class="check-icon">✓</span> 住宿地址截圖：<br /><strong>555 W Madison St, Chicago, IL 60661</strong></div>
+        <div class="checklist-item"><span class="check-icon">✓</span> 信用卡 (2張以上, 綁定 Apple Pay)</div>
+        <div class="checklist-item"><span class="check-icon">✓</span> 少量美金現鈔 ($1, $5 用於小費)</div>
 
-            <div class="info-title">🧥 穿搭指南 (洋蔥式)</div>
-            <div class="checklist-item"><span class="check-icon">🧥</span> <strong>外層</strong>：長版羽絨 (蓋過膝蓋)、防風防水</div>
-            <div class="checklist-item"><span class="check-icon">👕</span> <strong>內層</strong>：發熱衣 (Heattech Ultra Warm)</div>
-            <div class="checklist-item"><span class="check-icon">👖</span> <strong>下身</strong>：刷毛褲襪 / 防風褲</div>
-            <div class="checklist-item"><span class="check-icon">🧦</span> <strong>鞋襪</strong>：羊毛襪 + 防水防滑靴 (還是可以帶球鞋)</div>
-            <div class="checklist-item"><span class="check-icon">🧤</span> <strong>配件</strong>：毛帽 (蓋耳)、圍巾、觸控手套</div>
-
-            <div class="info-title">🧴 個人護理 & 其他</div>
-            <div class="checklist-item"><span class="check-icon">💧</span> 極度乾燥對策：凡士林、護唇膏、乳液</div>
-            <div class="checklist-item"><span class="check-icon">💊</span> 常備藥：感冒、過敏、維他命C</div>
-            <div class="checklist-item"><span class="check-icon">🔌</span> 電器：美國 110V (同台灣)、行動電源</div>
+        <div class="info-title">👮‍♀️ 入境通關模擬 (CBP Interview)</div>
+        <div class="qa-box">
+          <div class="qa-q">Q: Purpose of visit? (目的)</div>
+          <div class="qa-a">A: Vacation and visiting friends.</div>
         </div>
+        <div class="qa-box">
+          <div class="qa-q">Q: How long staying? (多久)</div>
+          <div class="qa-a">A: About 10 days. Leave on Jan 31st.</div>
+          <div class="qa-tip">Tip: 準備好回程機票證明</div>
+        </div>
+        <div class="qa-box">
+          <div class="qa-q">Q: Where staying? (住哪)</div>
+          <div class="qa-a">A: At my friend's apartment in West Loop.</div>
+          <div class="qa-tip">Tip: 出示地址 (555 W Madison St)</div>
+        </div>
+        <div class="qa-box">
+          <div class="qa-q">Q: Friend's job/status? (朋友身分)</div>
+          <div class="qa-a">A: She lives and studies (UIC) here. We are close friends from Taiwan.</div>
+          <div class="qa-tip">Tip: 說明朋友在 UIC 唸書</div>
+        </div>
+        <div class="qa-box">
+          <div class="qa-q">Q: Your occupation? (妳的職業)</div>
+          <div class="qa-a">A: I work as a piano teacher and pianist.</div>
+          <div class="qa-tip">Tip: 展現台灣工作穩定，一定會回國</div>
+        </div>
+
+        <div class="info-title">🧥 穿搭指南 (洋蔥式)</div>
+        <div class="checklist-item"><span class="check-icon">🧥</span> <strong>外層</strong>：長版羽絨 (蓋過膝蓋)、防風防水</div>
+        <div class="checklist-item"><span class="check-icon">👕</span> <strong>內層</strong>：發熱衣 (Heattech Ultra Warm)</div>
+        <div class="checklist-item"><span class="check-icon">👖</span> <strong>下身</strong>：刷毛褲襪 / 防風褲</div>
+        <div class="checklist-item"><span class="check-icon">🧦</span> <strong>鞋襪</strong>：羊毛襪 + 防水防滑靴 (還是可以帶球鞋)</div>
+        <div class="checklist-item"><span class="check-icon">🧤</span> <strong>配件</strong>：毛帽 (蓋耳)、圍巾、觸控手套</div>
+
+        <div class="info-title">🧴 個人護理 & 其他</div>
+        <div class="checklist-item"><span class="check-icon">💧</span> 極度乾燥對策：凡士林、護唇膏、乳液</div>
+        <div class="checklist-item"><span class="check-icon">💊</span> 常備藥：感冒、過敏、維他命C</div>
+        <div class="checklist-item"><span class="check-icon">🔌</span> 電器：美國 110V (同台灣)、行動電源</div>
+      </div>
     </div>
 
     <!-- BUDGET CARD -->
     <div id="budget-card" class="budget-card">
-        <div class="day-header header-budget">
-            <span>預算估算 (Budget)</span>
-            <span class="date-badge" style="background:var(--budget)">Yunyi Share</span>
+      <div class="day-header header-budget">
+        <span>預算估算 (Budget)</span>
+        <span class="date-badge" style="background: var(--budget)">Yunyi Share</span>
+      </div>
+      <div class="info-section">
+        <div style="font-size: 0.9rem; color: #666; margin-bottom: 15px; text-align: center;">
+          個人支出預估 • 依分攤原則計算
         </div>
-        <div class="info-section">
-            <div style="font-size:0.9rem; color:#666; margin-bottom:15px; text-align:center;">
-                個人支出預估 • 依分攤原則計算
-            </div>
 
-            <div class="budget-row">
-                <div class="budget-cat">🏠 住宿</div>
-                <div style="text-align:right;">
-                    <div class="budget-amt">$0</div>
-                    <div class="budget-note">自住租屋處</div>
-                </div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-cat">🚗 交通</div>
-                <div style="text-align:right;">
-                    <div class="budget-amt">$165</div>
-                    <div class="budget-note">機場($20)/Uber($110)/CTA($35)</div>
-                </div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-cat">🍔 餐飲</div>
-                <div style="text-align:right;">
-                    <div class="budget-amt">~$1,000</div>
-                    <div class="budget-note">Jollibee/Ciccio Mio/分攤後費用</div>
-                </div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-cat">🎟 門票</div>
-                <div style="text-align:right;">
-                    <div class="budget-amt">$285</div>
-                    <div class="budget-note">歌劇魅影($150)+觀景台/遊船/租鞋</div>
-                </div>
-            </div>
-             <div class="budget-row">
-                <div class="budget-cat">🎁 博物館</div>
-                <div style="text-align:right;">
-                    <div class="budget-amt" style="color:var(--budget);">$0</div>
-                    <div class="budget-note">美術館/水族館 免費日!</div>
-                </div>
-            </div>
-
-            <div class="budget-total">
-                <div style="font-size:0.9rem; color:#555;">Yunyi 個人預估總額</div>
-                <div class="budget-total-amt">~$1,450 USD</div>
-                <div style="font-size:0.8rem; color:#888;">約台幣 47,000 元</div>
-            </div>
-
-            <!-- View Detail Link -->
-            <div style="text-align:center; margin-top:20px; margin-bottom:10px;">
-                <a href="#" onclick="toggleDetails(); return false;" style="color:var(--budget); font-weight:bold; text-decoration:none; border-bottom:1px dotted var(--budget); font-size:0.9rem;">查看詳細預算表 (View Details) ▼</a>
-            </div>
-
-            <!-- Hidden Details Section -->
-            <div id="budget-details" style="display:none; margin-top:15px; border-top:1px dashed #ddd; padding-top:10px;">
-                <div class="detail-section-title">🚗 交通費用 (Transportation)</div>
-                <table class="detail-table">
-                    <tr><td>機場 Uber (Day 1)</td><td>$20 (3人攤)</td></tr>
-                    <tr><td>市區 Uber (Day 1-2)</td><td>$20 (3人攤)</td></tr>
-                    <tr><td>市區 Uber (Day 3-11)</td><td>$90 (2人攤)</td></tr>
-                    <tr><td>CTA 7-Day Pass</td><td>$20</td></tr>
-                    <tr><td>機場快線 (Blue Line)</td><td>$15</td></tr>
-                </table>
-
-                <div class="detail-section-title">🍔 餐飲費用 (Food & Drinks)</div>
-                <table class="detail-table">
-                    <tr><td>Day 1: Nonnina</td><td>$60 (3人攤)</td></tr>
-                    <tr><td>Day 2: Léa + Uno</td><td>$35 (3人攤)</td></tr>
-                    <tr><td>Day 3: Lou's + Quartino</td><td>$75 (2人攤)</td></tr>
-                    <tr><td>Day 4: Jollibee + Nonna</td><td>$35 (2人攤)</td></tr>
-                    <tr><td>Day 5: Kasama + Cheval</td><td>$60 (2人攤)</td></tr>
-                    <tr><td>Day 6: Larson + Ciccio</td><td>$95 (2人攤)</td></tr>
-                    <tr><td>Day 7: Dearborn</td><td>$45 (2人攤)</td></tr>
-                    <tr><td>Day 8: Ema</td><td>$55 (2人攤)</td></tr>
-                    <tr><td>Day 9: Volare</td><td>$50 (2人攤)</td></tr>
-                    <tr><td>Day 10: Shake Shack</td><td>$15 (2人攤)</td></tr>
-                    <tr><td>每日咖啡/早餐/酒水</td><td>$300 (預估)</td></tr>
-                </table>
-
-                <div class="detail-section-title">🎟 娛樂與門票 (Entertainment)</div>
-                <table class="detail-table">
-                    <tr><td>歌劇魅影</td><td>$150</td></tr>
-                    <tr><td>360 Chicago</td><td>$35</td></tr>
-                    <tr><td>建築遊船</td><td>$45</td></tr>
-                    <tr><td>溜冰租鞋</td><td>$20</td></tr>
-                    <tr><td>Outlet 雜支</td><td>$35</td></tr>
-                </table>
-            </div>
-
-            <div class="budget-tip-box">
-                <strong>💡 費用分攤邏輯</strong><br>
-                1. <strong>1/21-22</strong>：由 3 人分攤 (Uber & 餐廳)。<br>
-                2. <strong>1/23-31</strong>：由 2 人分攤 (Uber & 餐廳)。<br>
-                3. <strong>機票/門票</strong>：個人全額自付。<br>
-            </div>
+        <div class="budget-row">
+          <div class="budget-cat">🏠 住宿</div>
+          <div style="text-align: right;">
+            <div class="budget-amt">$0</div>
+            <div class="budget-note">自住租屋處</div>
+          </div>
         </div>
+        <div class="budget-row">
+          <div class="budget-cat">🚗 交通</div>
+          <div style="text-align: right;">
+            <div class="budget-amt">$165</div>
+            <div class="budget-note">機場($20)/Uber($110)/CTA($35)</div>
+          </div>
+        </div>
+        <div class="budget-row">
+          <div class="budget-cat">🍔 餐飲</div>
+          <div style="text-align: right;">
+            <div class="budget-amt">~$1,000</div>
+            <div class="budget-note">Jollibee/Ciccio Mio/分攤後費用</div>
+          </div>
+        </div>
+        <div class="budget-row">
+          <div class="budget-cat">🎟 門票</div>
+          <div style="text-align: right;">
+            <div class="budget-amt">$285</div>
+            <div class="budget-note">歌劇魅影($150)+觀景台/遊船/租鞋</div>
+          </div>
+        </div>
+        <div class="budget-row">
+          <div class="budget-cat">🎁 博物館</div>
+          <div style="text-align: right;">
+            <div class="budget-amt" style="color: var(--budget);">$0</div>
+            <div class="budget-note">美術館/水族館 免費日!</div>
+          </div>
+        </div>
+
+        <div class="budget-total">
+          <div style="font-size: 0.9rem; color: #555;">Yunyi 個人預估總額</div>
+          <div class="budget-total-amt">~$1,450 USD</div>
+          <div style="font-size: 0.8rem; color: #888;">約台幣 47,000 元</div>
+        </div>
+
+        <!-- View Detail Link -->
+        <div style="text-align: center; margin-top: 20px; margin-bottom: 10px;">
+          <a href="#" onclick="toggleDetails(); return false;" style="color: var(--budget); font-weight: bold; text-decoration: none; border-bottom: 1px dotted var(--budget); font-size: 0.9rem;">查看詳細預算表 (View Details) ▼</a>
+        </div>
+
+        <!-- Hidden Details Section -->
+        <div id="budget-details" style="display: none; margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px;">
+          <div class="detail-section-title">🚗 交通費用 (Transportation)</div>
+          <table class="detail-table">
+            <tr><td>機場 Uber (Day 1)</td><td>$20 (3人攤)</td></tr>
+            <tr><td>市區 Uber (Day 1-2)</td><td>$20 (3人攤)</td></tr>
+            <tr><td>市區 Uber (Day 3-11)</td><td>$90 (2人攤)</td></tr>
+            <tr><td>CTA 7-Day Pass</td><td>$20</td></tr>
+            <tr><td>機場快線 (Blue Line)</td><td>$15</td></tr>
+          </table>
+
+          <div class="detail-section-title">🍔 餐飲費用 (Food & Drinks)</div>
+          <table class="detail-table">
+            <tr><td>Day 1: Nonnina</td><td>$60 (3人攤)</td></tr>
+            <tr><td>Day 2: Léa + Uno</td><td>$35 (3人攤)</td></tr>
+            <tr><td>Day 3: Lou's + Quartino</td><td>$75 (2人攤)</td></tr>
+            <tr><td>Day 4: Jollibee + Nonna</td><td>$35 (2人攤)</td></tr>
+            <tr><td>Day 5: Kasama + Cheval</td><td>$60 (2人攤)</td></tr>
+            <tr><td>Day 6: Larson + Ciccio</td><td>$95 (2人攤)</td></tr>
+            <tr><td>Day 7: Dearborn</td><td>$45 (2人攤)</td></tr>
+            <tr><td>Day 8: Ema</td><td>$55 (2人攤)</td></tr>
+            <tr><td>Day 9: Volare</td><td>$50 (2人攤)</td></tr>
+            <tr><td>Day 10: Shake Shack</td><td>$15 (2人攤)</td></tr>
+            <tr><td>每日咖啡/早餐/酒水</td><td>$300 (預估)</td></tr>
+          </table>
+
+          <div class="detail-section-title">🎟 娛樂與門票 (Entertainment)</div>
+          <table class="detail-table">
+            <tr><td>歌劇魅影</td><td>$150</td></tr>
+            <tr><td>360 Chicago</td><td>$35</td></tr>
+            <tr><td>建築遊船</td><td>$45</td></tr>
+            <tr><td>溜冰租鞋</td><td>$20</td></tr>
+            <tr><td>Outlet 雜支</td><td>$35</td></tr>
+          </table>
+        </div>
+
+        <div class="budget-tip-box">
+          <strong>💡 費用分攤邏輯</strong><br />
+          1. <strong>1/21-22</strong>：由 3 人分攤 (Uber & 餐廳)。<br />
+          2. <strong>1/23-31</strong>：由 2 人分攤 (Uber & 餐廳)。<br />
+          3. <strong>機票/門票</strong>：個人全額自付。<br />
+        </div>
+      </div>
     </div>
 
+    <!-- ------------------------- DAYS (1-11) ------------------------- -->
     <!-- Day 1 -->
     <div id="day1" class="day-card active">
-        <div class="day-header">
-            <span>Day 1: Arrival</span>
-            <span class="date-badge">1/21 (Wed)</span>
-        </div>
-        <div class="timeline">
-            <div class="event friend">
-                <div class="time">12:32</div>
-                <div class="activity">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                    <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">Annie 抵達 (LAX > ORD)</a>
-                </div>
-                <div class="details">
-                    Annie 班機抵達 ORD。
-                    <div class="flight-path friend-path">
-                        6:25 AM LAX > 12:32 PM ORD
-                    </div>
-                    班機 (12:55) 時間近，在機場會合。
-                </div>
-                <div class="tags"><span class="tag tag-friend">Friend Arrival</span></div>
+      <div class="day-header">
+        <span>Day 1: Arrival</span>
+        <span class="date-badge">1/21 (Wed)</span>
+      </div>
+      <div class="timeline">
+        <div class="event friend">
+          <div class="time">12:32</div>
+          <div class="activity">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">Annie 抵達 (LAX &gt; ORD)</a>
+          </div>
+          <div class="details">
+            Annie 班機抵達 ORD。
+            <div class="flight-path friend-path">
+              6:25 AM LAX &gt; 12:32 PM ORD
             </div>
+            班機 (12:55) 時間近，在機場會合。
+          </div>
+          <div class="tags"><span class="tag tag-friend">Friend Arrival</span></div>
+        </div>
 
-            <div class="event flight">
-                <div class="time">12:55</div>
-                <div class="activity">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                    <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">抵達芝加哥 (ORD)</a>
-                </div>
-                <div class="details">
-                    HKG > ORD 班機降落。
-                    <div class="flight-path">
-                        前段：1/20 22:20 TPE > 00:30 HKG<br>
-                        本段：1/21 12:35 HKG > 12:55 ORD
-                    </div>
-                    預計 14:30 完成通關。會合後搭乘 UBER 至 <a href="https://www.google.com/maps/search/?api=1&query=Presidential+Towers+Chicago" target="_blank" style="color:inherit;text-decoration:underline;">Vivi's Home</a> (3人分攤)。
-                </div>
-                <div class="tags"><span class="tag tag-flight">Flight Arrival</span></div>
+        <div class="event flight">
+          <div class="time">12:55</div>
+          <div class="activity">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">抵達芝加哥 (ORD)</a>
+          </div>
+          <div class="details">
+            HKG &gt; ORD 班機降落。
+            <div class="flight-path">
+              前段：1/20 22:20 TPE &gt; 00:30 HKG<br />
+              本段：1/21 12:35 HKG &gt; 12:55 ORD
             </div>
-            <div class="event">
-                <div class="time">16:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Chicago+Riverwalk" target="_blank" class="map-link">Riverwalk 散步</a>
-                </div>
-                <div class="details">沿著河岸感受芝加哥建築夜景，適應寒冷天氣。</div>
-                <div class="tags"><span class="tag tag-loc">Riverwalk</span></div>
-            </div>
-            <div class="event">
-                <div class="time">18:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Nonnina+Chicago" target="_blank" class="map-link">晚餐：Nonnina</a>
-                </div>
-                <div class="details">
-                    必點 Truffle Pasta、Carbonara。<br>
-                    氣氛溫馨，適合第一晚放鬆。
-                </div>
-                <div class="tags"><span class="tag tag-food">義式</span><span class="tag tag-imp">必吃</span></div>
-            </div>
-            <div class="event">
-                <div class="time">20:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=360+Chicago" target="_blank" class="map-link">備案：360 Chicago</a>
-                </div>
-                <div class="details">
-                    (John Hancock Center)<br>
-                    若體力允許，晚餐後可前往觀賞夜景。<br>
-                    離餐廳僅 5 分鐘車程，營業至 11 PM。可體驗 TILT。
-                </div>
-                <div class="tags"><span class="tag tag-loc">夜景</span><span class="tag tag-imp">備案</span></div>
-            </div>
+            預計 14:30 完成通關。會合後搭乘 UBER 至
+            <a href="https://www.google.com/maps/search/?api=1&query=Presidential+Towers+Chicago" target="_blank" style="color: inherit; text-decoration: underline;">Vivi's Home</a>
+            (3人分攤)。
+          </div>
+          <div class="tags"><span class="tag tag-flight">Flight Arrival</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(2)">Next Day ▶</button>
+
+        <div class="event">
+          <div class="time">16:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Chicago+Riverwalk" target="_blank" class="map-link">Riverwalk 散步</a>
+          </div>
+          <div class="details">沿著河岸感受芝加哥建築夜景，適應寒冷天氣。</div>
+          <div class="tags"><span class="tag tag-loc">Riverwalk</span></div>
         </div>
+        <div class="event">
+          <div class="time">18:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Nonnina+Chicago" target="_blank" class="map-link">晚餐：Nonnina</a>
+          </div>
+          <div class="details">
+            必點 Truffle Pasta、Carbonara。<br />
+            氣氛溫馨，適合第一晚放鬆。
+          </div>
+          <div class="tags"><span class="tag tag-food">義式</span><span class="tag tag-imp">必吃</span></div>
+        </div>
+        <div class="event">
+          <div class="time">20:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=360+Chicago" target="_blank" class="map-link">備案：360 Chicago</a>
+          </div>
+          <div class="details">
+            (John Hancock Center)<br />
+            若體力允許，晚餐後可前往觀賞夜景。<br />
+            離餐廳僅 5 分鐘車程，營業至 11 PM。可體驗 TILT。
+          </div>
+          <div class="tags"><span class="tag tag-loc">夜景</span><span class="tag tag-imp">備案</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(2)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 2 -->
     <div id="day2" class="day-card">
-        <div class="day-header">
-            <span>Day 2: The Classics</span>
-            <span class="date-badge">1/22 (Thu)</span>
+      <div class="day-header">
+        <span>Day 2: The Classics</span>
+        <span class="date-badge">1/22 (Thu)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">09:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Lea+French+Cafe+Chicago" target="_blank" class="map-link">Léa French Cafe</a>
+          </div>
+          <div class="details">法式咖啡廳 (Coffee & Pastries)。就在千禧公園旁，享受悠閒早餐。</div>
+          <div class="tags"><span class="tag tag-food">咖啡</span></div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">09:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Lea+French+Cafe+Chicago" target="_blank" class="map-link">Léa French Cafe</a>
-                </div>
-                <div class="details">法式咖啡廳 (Coffee & Pastries)。就在千禧公園旁，享受悠閒早餐。</div>
-                <div class="tags"><span class="tag tag-food">咖啡</span></div>
-            </div>
-            <div class="event">
-                <div class="time">11:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Millennium+Park+Chicago" target="_blank" class="map-link">Millennium Park</a>
-                </div>
-                <div class="details">
-                    Cloud Gate (豆子) 拍照。<br>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Maggie+Daley+Park" target="_blank" style="color:inherit;text-decoration:underline;">Maggie Daley Park</a> 溜冰絲帶 (Skating Ribbon)。
-                </div>
-                <div class="tags"><span class="tag tag-loc">Loop</span></div>
-            </div>
-            <div class="event">
-                <div class="time">14:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Art+Institute+of+Chicago" target="_blank" class="map-link">Art Institute</a>
-                </div>
-                <div class="details">芝加哥美術館，參觀印象派館藏。<br><span style="color:var(--budget); font-weight:bold;">★ 免費日 (Free Admission)</span></div>
-                <div class="tags"><span class="tag tag-loc">美術館</span></div>
-            </div>
-            <div class="event">
-                <div class="time">16:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Pizzeria+Uno+Chicago" target="_blank" class="map-link">晚餐：Pizzeria Uno</a>
-                </div>
-                <div class="details">
-                    <strong>深盤披薩發源地 (Original Deep Dish)。</strong><br>
-                    現烤需 45-50 分鐘，建議提早入座點餐，作為朋友的送別餐。
-                </div>
-                <div class="tags"><span class="tag tag-food">披薩</span><span class="tag tag-imp">必吃</span></div>
-            </div>
-            
-            <div class="event friend">
-                <div class="time">18:00</div>
-                <div class="activity">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                    <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">Annie 前往機場 (ORD)</a>
-                </div>
-                <div class="details">
-                    Annie 結束兩天快閃行程。班機 20:10 起飛。
-                    <div class="flight-path friend-path">
-                        8:10 PM ORD > 10:59 PM LAX
-                    </div>
-                </div>
-                <div class="tags"><span class="tag tag-friend">Friend Departure</span></div>
-            </div>
+        <div class="event">
+          <div class="time">11:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Millennium+Park+Chicago" target="_blank" class="map-link">Millennium Park</a>
+          </div>
+          <div class="details">
+            Cloud Gate (豆子) 拍照。<br />
+            <a href="https://www.google.com/maps/search/?api=1&query=Maggie+Daley+Park" target="_blank" style="color: inherit; text-decoration: underline;">Maggie Daley Park</a>
+            溜冰絲帶 (Skating Ribbon)。
+          </div>
+          <div class="tags"><span class="tag tag-loc">Loop</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(3)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">14:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Art+Institute+of+Chicago" target="_blank" class="map-link">Art Institute</a>
+          </div>
+          <div class="details">芝加哥美術館，參觀印象派館藏。<br /><span style="color: var(--budget); font-weight: bold;">★ 免費日 (Free Admission)</span></div>
+          <div class="tags"><span class="tag tag-loc">美術館</span></div>
         </div>
+        <div class="event">
+          <div class="time">16:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Pizzeria+Uno+Chicago" target="_blank" class="map-link">晚餐：Pizzeria Uno</a>
+          </div>
+          <div class="details">
+            <strong>深盤披薩發源地 (Original Deep Dish)。</strong><br />
+            現烤需 45-50 分鐘，建議提早入座點餐，作為朋友的送別餐。
+          </div>
+          <div class="tags"><span class="tag tag-food">披薩</span><span class="tag tag-imp">必吃</span></div>
+        </div>
+
+        <div class="event friend">
+          <div class="time">18:00</div>
+          <div class="activity">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">Annie 前往機場 (ORD)</a>
+          </div>
+          <div class="details">
+            Annie 結束兩天快閃行程。班機 20:10 起飛。
+            <div class="flight-path friend-path">
+              8:10 PM ORD &gt; 10:59 PM LAX
+            </div>
+          </div>
+          <div class="tags"><span class="tag tag-friend">Friend Departure</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(3)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 3 -->
     <div id="day3" class="day-card">
-        <div class="day-header">
-            <span>Day 3: Skydeck & West Loop</span>
-            <span class="date-badge">1/23 (Fri)</span>
+      <div class="day-header">
+        <span>Day 3: Skydeck & West Loop</span>
+        <span class="date-badge">1/23 (Fri)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">10:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Lou+Mitchell's" target="_blank" class="map-link">Lou Mitchell's</a>
+          </div>
+          <div class="details">Route 66 傳奇早餐，離住宿步行 5 分鐘。</div>
+          <div class="tags"><span class="tag tag-food">早餐</span></div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">10:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Lou+Mitchell's" target="_blank" class="map-link">Lou Mitchell's</a>
-                </div>
-                <div class="details">Route 66 傳奇早餐，離住宿步行 5 分鐘。</div>
-                <div class="tags"><span class="tag tag-food">早餐</span></div>
-            </div>
-            <div class="event">
-                <div class="time">11:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=University+of+Illinois+Chicago" target="_blank" class="map-link">UIC Campus Walk</a>
-                </div>
-                <div class="details">
-                    吃完早餐往南走即達。參觀 <a href="https://www.google.com/maps/search/?api=1&query=UIC+Student+Center+East" target="_blank" style="color:inherit;text-decoration:underline;">Student Center East</a> 與校園核心區。<br>
-                    剛好可以看看朋友唸書的環境。
-                </div>
-                <div class="tags"><span class="tag tag-loc">校園</span></div>
-            </div>
-            <div class="event">
-                <div class="time">13:30</div>
-                <div class="activity">
-                    West Loop 散步
-                </div>
-                <div class="details">走回 West Loop，去 <a href="https://www.google.com/maps/search/?api=1&query=La+Colombe+Coffee+Workshop+Chicago" target="_blank" class="map-link">La Colombe Coffee Workshop</a> 喝杯咖啡休息。</div>
-            </div>
-            <div class="event">
-                <div class="time">16:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Skydeck+Chicago" target="_blank" class="map-link">Willis Tower (Skydeck)</a>
-                </div>
-                <div class="details">就在住處旁邊。建議日落前入場，一次看白天/夕陽/夜景。</div>
-                <div class="tags"><span class="tag tag-loc">景點</span><span class="tag tag-imp">重點</span></div>
-            </div>
-            <div class="event">
-                <div class="time">19:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Quartino+Ristorante" target="_blank" class="map-link">晚餐：Quartino</a>
-                </div>
-                <div class="details">
-                    熱鬧義式小盤料理 (River North)。<br>
-                    <span style="color:var(--budget); font-weight:bold;">★ Restaurant Week Deal</span>
-                </div>
-                <div class="tags"><span class="tag tag-food">義式</span></div>
-            </div>
+        <div class="event">
+          <div class="time">11:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=University+of+Illinois+Chicago" target="_blank" class="map-link">UIC Campus Walk</a>
+          </div>
+          <div class="details">
+            吃完早餐往南走即達。參觀
+            <a href="https://www.google.com/maps/search/?api=1&query=UIC+Student+Center+East" target="_blank" style="color: inherit; text-decoration: underline;">Student Center East</a>
+            與校園核心區。<br />
+            剛好可以看看朋友唸書的環境。
+          </div>
+          <div class="tags"><span class="tag tag-loc">校園</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(4)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">13:30</div>
+          <div class="activity">West Loop 散步</div>
+          <div class="details">
+            走回 West Loop，去
+            <a href="https://www.google.com/maps/search/?api=1&query=La+Colombe+Coffee+Workshop+Chicago" target="_blank" class="map-link">La Colombe Coffee Workshop</a>
+            喝杯咖啡休息。
+          </div>
         </div>
+        <div class="event">
+          <div class="time">16:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Skydeck+Chicago" target="_blank" class="map-link">Willis Tower (Skydeck)</a>
+          </div>
+          <div class="details">就在住處旁邊。建議日落前入場，一次看白天/夕陽/夜景。</div>
+          <div class="tags"><span class="tag tag-loc">景點</span><span class="tag tag-imp">重點</span></div>
+        </div>
+        <div class="event">
+          <div class="time">19:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Quartino+Ristorante" target="_blank" class="map-link">晚餐：Quartino</a>
+          </div>
+          <div class="details">
+            熱鬧義式小盤料理 (River North)。<br />
+            <span style="color: var(--budget); font-weight: bold;">★ Restaurant Week Deal</span>
+          </div>
+          <div class="tags"><span class="tag tag-food">義式</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(4)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 4 -->
     <div id="day4" class="day-card">
-        <div class="day-header">
-            <span>Day 4: Shopping</span>
-            <span class="date-badge">1/24 (Sat)</span>
+      <div class="day-header">
+        <span>Day 4: Shopping</span>
+        <span class="date-badge">1/24 (Sat)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">11:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=The+Magnificent+Mile+Chicago" target="_blank" class="map-link">Mag Mile 購物</a>
+          </div>
+          <div class="details">Nordstrom, Aritzia, Nordstrom Rack。</div>
+          <div class="tags"><span class="tag tag-loc">購物</span></div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">11:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=The+Magnificent+Mile+Chicago" target="_blank" class="map-link">Mag Mile 購物</a>
-                </div>
-                <div class="details">Nordstrom, Aritzia, Nordstrom Rack。</div>
-                <div class="tags"><span class="tag tag-loc">購物</span></div>
-            </div>
-            <div class="event">
-                <div class="time">13:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Jollibee+Chicago+Michigan+Ave" target="_blank" class="map-link">午餐：Jollibee</a>
-                </div>
-                <div class="details">
-                    知名菲律賓炸雞速食。便宜又好吃，適合購物中途快速補充體力。<br>
-                    位於 Michigan Ave 附近。
-                </div>
-                <div class="tags"><span class="tag tag-food">速食</span><span class="tag tag-imp">省錢</span></div>
-            </div>
-            <div class="event">
-                <div class="time">15:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Ralph's+Coffee+Chicago" target="_blank" class="map-link">下午茶：Ralph’s Coffee</a>
-                </div>
-                <div class="details">位於 Ralph Lauren 旗艦店內。</div>
-            </div>
-            <div class="event">
-                <div class="time">18:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Nonna's+Chicago" target="_blank" class="map-link">晚餐：Nonna's</a>
-                </div>
-                <div class="details">溫馨義式熟食店/三明治。逛完街回 West Loop 吃晚餐，順路回家。</div>
-                <div class="tags"><span class="tag tag-food">輕食</span></div>
-            </div>
+        <div class="event">
+          <div class="time">13:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Jollibee+Chicago+Michigan+Ave" target="_blank" class="map-link">午餐：Jollibee</a>
+          </div>
+          <div class="details">
+            知名菲律賓炸雞速食。便宜又好吃，適合購物中途快速補充體力。<br />
+            位於 Michigan Ave 附近。
+          </div>
+          <div class="tags"><span class="tag tag-food">速食</span><span class="tag tag-imp">省錢</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(5)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">15:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Ralph's+Coffee+Chicago" target="_blank" class="map-link">下午茶：Ralph’s Coffee</a>
+          </div>
+          <div class="details">位於 Ralph Lauren 旗艦店內。</div>
         </div>
+        <div class="event">
+          <div class="time">18:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Nonna's+Chicago" target="_blank" class="map-link">晚餐：Nonna's</a>
+          </div>
+          <div class="details">溫馨義式熟食店/三明治。逛完街回 West Loop 吃晚餐，順路回家。</div>
+          <div class="tags"><span class="tag tag-food">輕食</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(5)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 5 -->
     <div id="day5" class="day-card">
-        <div class="day-header">
-            <span>Day 5: Wicker Park</span>
-            <span class="date-badge">1/25 (Sun)</span>
+      <div class="day-header">
+        <span>Day 5: Wicker Park</span>
+        <span class="date-badge">1/25 (Sun)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">10:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Kasama+Chicago" target="_blank" class="map-link">Brunch: Kasama</a>
+          </div>
+          <div class="details">
+            <strong>米其林一星 / 《大熊餐廳》名店。</strong><br />
+            必吃 Longanisa 早餐盤與 Danish 麵包。建議早點去排隊！<br />
+            (吃完再前往 Wicker Park 逛街)
+          </div>
+          <div class="tags"><span class="tag tag-food">必吃</span><span class="tag tag-imp">星級</span></div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">10:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Kasama+Chicago" target="_blank" class="map-link">Brunch: Kasama</a>
-                </div>
-                <div class="details">
-                    <strong>米其林一星 / 《大熊餐廳》名店。</strong><br>
-                    必吃 Longanisa 早餐盤與 Danish 麵包。建議早點去排隊！<br>
-                    (吃完再前往 Wicker Park 逛街)
-                </div>
-                <div class="tags"><span class="tag tag-food">必吃</span><span class="tag tag-imp">星級</span></div>
-            </div>
-            <div class="event">
-                <div class="time">12:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Wicker+Park+Chicago" target="_blank" class="map-link">Wicker Park / Bucktown</a>
-                </div>
-                <div class="details">搭藍線至 <a href="https://www.google.com/maps/search/?api=1&query=Damen+Blue+Line+Station" target="_blank" style="color:inherit;">Damen 站</a>。逛 Vintage store、唱片行。</div>
-                <div class="tags"><span class="tag tag-loc">文青</span></div>
-            </div>
-            <div class="event">
-                <div class="time">15:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=The+Map+Room+Chicago" target="_blank" class="map-link">Map Room</a>
-                </div>
-                <div class="details">下午小酌或咖啡放空，體驗當地人生活。</div>
-            </div>
-            <div class="event">
-                <div class="time">18:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Small+Cheval+Wicker+Park" target="_blank" class="map-link">晚餐：Small Cheval</a>
-                </div>
-                <div class="details">美味漢堡，不用排 Au Cheval 那麼久。</div>
-                <div class="tags"><span class="tag tag-food">漢堡</span></div>
-            </div>
+        <div class="event">
+          <div class="time">12:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Wicker+Park+Chicago" target="_blank" class="map-link">Wicker Park / Bucktown</a>
+          </div>
+          <div class="details">
+            搭藍線至
+            <a href="https://www.google.com/maps/search/?api=1&query=Damen+Blue+Line+Station" target="_blank" style="color: inherit;">Damen 站</a>。
+            逛 Vintage store、唱片行。
+          </div>
+          <div class="tags"><span class="tag tag-loc">文青</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(6)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">15:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=The+Map+Room+Chicago" target="_blank" class="map-link">Map Room</a>
+          </div>
+          <div class="details">下午小酌或咖啡放空，體驗當地人生活。</div>
         </div>
+        <div class="event">
+          <div class="time">18:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Small+Cheval+Wicker+Park" target="_blank" class="map-link">晚餐：Small Cheval</a>
+          </div>
+          <div class="details">美味漢堡，不用排 Au Cheval 那麼久。</div>
+          <div class="tags"><span class="tag tag-food">漢堡</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(6)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 6 -->
     <div id="day6" class="day-card">
-        <div class="day-header">
-            <span>Day 6: Zoo & Andersonville</span>
-            <span class="date-badge">1/26 (Mon)</span>
+      <div class="day-header">
+        <span>Day 6: Zoo & Andersonville</span>
+        <span class="date-badge">1/26 (Mon)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">10:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Lincoln+Park+Zoo" target="_blank" class="map-link">Lincoln Park Zoo</a>
+          </div>
+          <div class="details">免費動物園，可參觀室內熱帶館。</div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">10:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Lincoln+Park+Zoo" target="_blank" class="map-link">Lincoln Park Zoo</a>
-                </div>
-                <div class="details">免費動物園，可參觀室內熱帶館。</div>
-            </div>
-            <div class="event">
-                <div class="time">13:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Andersonville+Chicago" target="_blank" class="map-link">Andersonville</a>
-                </div>
-                <div class="details">充滿瑞典風情的街區，逛獨立小店。</div>
-                <div class="tags"><span class="tag tag-loc">北區</span></div>
-            </div>
-            <div class="event">
-                <div class="time">14:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Lost+Larson" target="_blank" class="map-link">Lost Larson</a>
-                </div>
-                <div class="details">必吃肉桂捲、公主蛋糕。16:15 準備搭車前往晚餐。</div>
-                <div class="tags"><span class="tag tag-food">甜點</span></div>
-            </div>
-            <div class="event">
-                <div class="time">17:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Ciccio+Mio" target="_blank" class="map-link">晚餐：Ciccio Mio</a>
-                </div>
-                <div class="details">
-                    復古華麗義式餐廳，Spicy Vodka Pasta 必點。<br>
-                    <strong>★ Reservation Confirmed: 5:00 PM</strong>
-                </div>
-                <div class="tags"><span class="tag tag-food">義式</span><span class="tag tag-imp">需訂位</span></div>
-            </div>
+        <div class="event">
+          <div class="time">13:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Andersonville+Chicago" target="_blank" class="map-link">Andersonville</a>
+          </div>
+          <div class="details">充滿瑞典風情的街區，逛獨立小店。</div>
+          <div class="tags"><span class="tag tag-loc">北區</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(7)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">14:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Lost+Larson" target="_blank" class="map-link">Lost Larson</a>
+          </div>
+          <div class="details">必吃肉桂捲、公主蛋糕。16:15 準備搭車前往晚餐。</div>
+          <div class="tags"><span class="tag tag-food">甜點</span></div>
         </div>
+        <div class="event">
+          <div class="time">17:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Ciccio+Mio" target="_blank" class="map-link">晚餐：Ciccio Mio</a>
+          </div>
+          <div class="details">
+            復古華麗義式餐廳，Spicy Vodka Pasta 必點。<br />
+            <strong>★ Reservation Confirmed: 5:00 PM</strong>
+          </div>
+          <div class="tags"><span class="tag tag-food">義式</span><span class="tag tag-imp">需訂位</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(7)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 7 -->
     <div id="day7" class="day-card">
-        <div class="day-header">
-            <span>Day 7: Phantom of the Opera</span>
-            <span class="date-badge">1/27 (Tue)</span>
+      <div class="day-header">
+        <span>Day 7: Phantom of the Opera</span>
+        <span class="date-badge">1/27 (Tue)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">10:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Garfield+Park+Conservatory" target="_blank" class="map-link">Garfield Park Conservatory</a>
+          </div>
+          <div class="details">
+            全美最美溫室之一，冬日避寒綠洲。<br />
+            搭乘 Green Line 可達。免費入場 (建議捐款)。
+          </div>
+          <div class="tags"><span class="tag tag-loc">溫室</span><span class="tag tag-imp">免費</span></div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">10:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Garfield+Park+Conservatory" target="_blank" class="map-link">Garfield Park Conservatory</a>
-                </div>
-                <div class="details">
-                    全美最美溫室之一，冬日避寒綠洲。<br>
-                    搭乘 Green Line 可達。免費入場 (建議捐款)。
-                </div>
-                <div class="tags"><span class="tag tag-loc">溫室</span><span class="tag tag-imp">免費</span></div>
-            </div>
-            <div class="event">
-                <div class="time">12:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Time+Out+Market+Chicago" target="_blank" class="map-link">午餐：Time Out Market</a>
-                </div>
-                <div class="details">
-                    位於 Fulton Market，匯集芝加哥名店的美食廣場。
-                </div>
-                <div class="tags"><span class="tag tag-food">美食廣場</span></div>
-            </div>
-            <div class="event">
-                <div class="time">14:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Chicago+Cultural+Center" target="_blank" class="map-link">Chicago Cultural Center</a>
-                </div>
-                <div class="details">參觀全世界最大的 Tiffany 彩繪玻璃圓頂。離劇院很近。</div>
-                <div class="tags"><span class="tag tag-loc">景點</span></div>
-            </div>
-            <div class="event">
-                <div class="time">17:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=The+Dearborn" target="_blank" class="map-link">晚餐：The Dearborn</a>
-                </div>
-                <div class="details">或 <a href="https://www.google.com/maps/search/?api=1&query=Petterino's" target="_blank" style="color:inherit;text-decoration:underline;">Petterino's</a>。劇院旁的經典晚餐選擇。</div>
-                <div class="tags"><span class="tag tag-food">劇前晚餐</span></div>
-            </div>
-            <div class="event show">
-                <div class="time">19:00</div>
-                <div class="activity">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Cadillac+Palace+Theatre" target="_blank" class="map-link">The Phantom of the Opera</a>
-                </div>
-                <div class="details">Cadillac Palace Theatre<br>經典百老匯音樂劇，全新北美巡演版。<br><em>(暫定/Smart Casual)</em></div>
-                <div class="tags"><span class="tag tag-show">Musical</span><span class="tag tag-imp">必看</span></div>
-            </div>
+        <div class="event">
+          <div class="time">12:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Time+Out+Market+Chicago" target="_blank" class="map-link">午餐：Time Out Market</a>
+          </div>
+          <div class="details">位於 Fulton Market，匯集芝加哥名店的美食廣場。</div>
+          <div class="tags"><span class="tag tag-food">美食廣場</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(8)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">14:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Chicago+Cultural+Center" target="_blank" class="map-link">Chicago Cultural Center</a>
+          </div>
+          <div class="details">參觀全世界最大的 Tiffany 彩繪玻璃圓頂。離劇院很近。</div>
+          <div class="tags"><span class="tag tag-loc">景點</span></div>
         </div>
+        <div class="event">
+          <div class="time">17:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=The+Dearborn" target="_blank" class="map-link">晚餐：The Dearborn</a>
+          </div>
+          <div class="details">
+            或
+            <a href="https://www.google.com/maps/search/?api=1&query=Petterino's" target="_blank" style="color: inherit; text-decoration: underline;">Petterino's</a>。
+            劇院旁的經典晚餐選擇。
+          </div>
+          <div class="tags"><span class="tag tag-food">劇前晚餐</span></div>
+        </div>
+        <div class="event show">
+          <div class="time">19:00</div>
+          <div class="activity">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
+            <a href="https://www.google.com/maps/search/?api=1&query=Cadillac+Palace+Theatre" target="_blank" class="map-link">The Phantom of the Opera</a>
+          </div>
+          <div class="details">
+            Cadillac Palace Theatre<br />
+            經典百老匯音樂劇，全新北美巡演版。<br />
+            <em>(暫定/Smart Casual)</em>
+          </div>
+          <div class="tags"><span class="tag tag-show">Musical</span><span class="tag tag-imp">必看</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(8)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 8 -->
     <div id="day8" class="day-card">
-        <div class="day-header">
-            <span>Day 8: Evanston</span>
-            <span class="date-badge">1/28 (Wed)</span>
+      <div class="day-header">
+        <span>Day 8: Evanston</span>
+        <span class="date-badge">1/28 (Wed)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">10:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Evanston+IL" target="_blank" class="map-link">前往 Evanston</a>
+          </div>
+          <div class="details">搭乘紫線 (Purple Line) 往北。</div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">10:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Evanston+IL" target="_blank" class="map-link">前往 Evanston</a>
-                </div>
-                <div class="details">搭乘紫線 (Purple Line) 往北。</div>
-            </div>
-            <div class="event">
-                <div class="time">11:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Northwestern+University" target="_blank" class="map-link">Northwestern Univ.</a>
-                </div>
-                <div class="details">西北大學湖畔校園散步 (Lakefill)。</div>
-            </div>
-            <div class="event">
-                <div class="time">16:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Wendella+Tours+%26+Cruises" target="_blank" class="map-link">Wendella Boat Tour</a>
-                </div>
-                <div class="details">夕陽建築遊船 (Winter Tour)。<br><em>*若天氣不佳改為 <a href="https://www.google.com/maps/search/?api=1&query=Chicago+Architecture+Center" target="_blank" style="color:inherit;text-decoration:underline;">建築中心 (CAC)</a></em></div>
-                <div class="tags"><span class="tag tag-loc">遊船</span></div>
-            </div>
-            <div class="event">
-                <div class="time">18:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Ema+Chicago" target="_blank" class="map-link">晚餐：Ema</a>
-                </div>
-                <div class="details">River North 地中海料理，鷹嘴豆泥必點。</div>
-                <div class="tags"><span class="tag tag-food">地中海</span></div>
-            </div>
+        <div class="event">
+          <div class="time">11:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Northwestern+University" target="_blank" class="map-link">Northwestern Univ.</a>
+          </div>
+          <div class="details">西北大學湖畔校園散步 (Lakefill)。</div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(9)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">16:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Wendella+Tours+%26+Cruises" target="_blank" class="map-link">Wendella Boat Tour</a>
+          </div>
+          <div class="details">
+            夕陽建築遊船 (Winter Tour)。<br />
+            <em>*若天氣不佳改為
+              <a href="https://www.google.com/maps/search/?api=1&query=Chicago+Architecture+Center" target="_blank" style="color: inherit; text-decoration: underline;">建築中心 (CAC)</a></em>
+          </div>
+          <div class="tags"><span class="tag tag-loc">遊船</span></div>
         </div>
+        <div class="event">
+          <div class="time">18:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Ema+Chicago" target="_blank" class="map-link">晚餐：Ema</a>
+          </div>
+          <div class="details">River North 地中海料理，鷹嘴豆泥必點。</div>
+          <div class="tags"><span class="tag tag-food">地中海</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(9)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 9 -->
     <div id="day9" class="day-card">
-        <div class="day-header">
-            <span>Day 9: Aquarium</span>
-            <span class="date-badge">1/29 (Thu)</span>
+      <div class="day-header">
+        <span>Day 9: Aquarium</span>
+        <span class="date-badge">1/29 (Thu)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">10:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Shedd+Aquarium" target="_blank" class="map-link">Shedd Aquarium</a>
+          </div>
+          <div class="details">水族館 (平日人較少)。<br /><span style="color: var(--budget); font-weight: bold;">★ 免費日 (Free Admission)</span></div>
+          <div class="tags"><span class="tag tag-loc">室內</span></div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">10:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Shedd+Aquarium" target="_blank" class="map-link">Shedd Aquarium</a>
-                </div>
-                <div class="details">水族館 (平日人較少)。<br><span style="color:var(--budget); font-weight:bold;">★ 免費日 (Free Admission)</span></div>
-                <div class="tags"><span class="tag tag-loc">室內</span></div>
-            </div>
-            <div class="event">
-                <div class="time">14:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Metric+Coffee" target="_blank" class="map-link">Metric Coffee</a>
-                </div>
-                <div class="details">西區工業風烘豆廠咖啡。</div>
-            </div>
-            <div class="event">
-                <div class="time">18:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Volare+Ristorante+Italiano" target="_blank" class="map-link">晚餐：Volare</a>
-                </div>
-                <div class="details">
-                    經典老派義大利菜。服務親切，義大利麵極佳。<br>
-                    <span style="color:var(--budget); font-weight:bold;">★ Restaurant Week Deal</span>
-                </div>
-                <div class="tags"><span class="tag tag-food">義式</span></div>
-            </div>
-            <div class="event">
-                <div class="time">備案</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Green+Street+Smoked+Meats" target="_blank" class="map-link">Green St Smoked Meats</a>
-                </div>
-                <div class="details">
-                    (West Loop 德州 BBQ)<br>
-                    若不想跑太遠或想換口味，這家就在住處附近，氣氛超嗨。
-                </div>
-                <div class="tags"><span class="tag tag-food">BBQ</span><span class="tag tag-imp">備案</span></div>
-            </div>
+        <div class="event">
+          <div class="time">14:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Metric+Coffee" target="_blank" class="map-link">Metric Coffee</a>
+          </div>
+          <div class="details">西區工業風烘豆廠咖啡。</div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(10)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">18:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Volare+Ristorante+Italiano" target="_blank" class="map-link">晚餐：Volare</a>
+          </div>
+          <div class="details">
+            經典老派義大利菜。服務親切，義大利麵極佳。<br />
+            <span style="color: var(--budget); font-weight: bold;">★ Restaurant Week Deal</span>
+          </div>
+          <div class="tags"><span class="tag tag-food">義式</span></div>
         </div>
+        <div class="event">
+          <div class="time">備案</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Green+Street+Smoked+Meats" target="_blank" class="map-link">Green St Smoked Meats</a>
+          </div>
+          <div class="details">
+            (West Loop 德州 BBQ)<br />
+            若不想跑太遠或想換口味，這家就在住處附近，氣氛超嗨。
+          </div>
+          <div class="tags"><span class="tag tag-food">BBQ</span><span class="tag tag-imp">備案</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(10)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 10 -->
     <div id="day10" class="day-card">
-        <div class="day-header">
-            <span>Day 10: Shopping & Farewell</span>
-            <span class="date-badge">1/30 (Fri)</span>
+      <div class="day-header">
+        <span>Day 10: Shopping & Farewell</span>
+        <span class="date-badge">1/30 (Fri)</span>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="time">10:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Do-Rite+Donuts+%26+Chicken" target="_blank" class="map-link">Do-Rite Donuts</a>
+          </div>
+          <div class="details">悠閒早餐，享用芝加哥好吃的甜甜圈與炸雞堡。</div>
+          <div class="tags"><span class="tag tag-food">早餐</span></div>
         </div>
-        <div class="timeline">
-            <div class="event">
-                <div class="time">10:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Do-Rite+Donuts+%26+Chicken" target="_blank" class="map-link">Do-Rite Donuts</a>
-                </div>
-                <div class="details">悠閒早餐，享用芝加哥好吃的甜甜圈與炸雞堡。</div>
-                <div class="tags"><span class="tag tag-food">早餐</span></div>
-            </div>
-            <div class="event">
-                <div class="time">12:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Fashion+Outlets+of+Chicago" target="_blank" class="map-link">Fashion Outlets of Chicago</a>
-                </div>
-                <div class="details">
-                    搭乘 Blue Line 至 <strong>Rosemont 站</strong>。<br>
-                    室內 Outlet，不怕風雪。Lululemon, Nike, Gucci 等品牌最後衝刺。
-                </div>
-                <div class="tags"><span class="tag tag-loc">購物</span><span class="tag tag-imp">Outlet</span></div>
-            </div>
-            <div class="event">
-                <div class="time">18:30</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Shake+Shack+West+Loop" target="_blank" class="map-link">告別晚餐：Shake Shack</a>
-                </div>
-                <div class="details">或 Chipotle。回到 West Loop 住處附近輕鬆吃，整理行李。</div>
-                <div class="tags"><span class="tag tag-food">速食</span></div>
-            </div>
+        <div class="event">
+          <div class="time">12:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Fashion+Outlets+of+Chicago" target="_blank" class="map-link">Fashion Outlets of Chicago</a>
+          </div>
+          <div class="details">
+            搭乘 Blue Line 至 <strong>Rosemont 站</strong>。<br />
+            室內 Outlet，不怕風雪。Lululemon, Nike, Gucci 等品牌最後衝刺。
+          </div>
+          <div class="tags"><span class="tag tag-loc">購物</span><span class="tag tag-imp">Outlet</span></div>
         </div>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="showDay(11)">Next Day ▶</button>
+        <div class="event">
+          <div class="time">18:30</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=Shake+Shack+West+Loop" target="_blank" class="map-link">告別晚餐：Shake Shack</a>
+          </div>
+          <div class="details">或 Chipotle。回到 West Loop 住處附近輕鬆吃，整理行李。</div>
+          <div class="tags"><span class="tag tag-food">速食</span></div>
         </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-next" onclick="showDay(11)">Next Day ▶</button>
+      </div>
     </div>
 
     <!-- Day 11 -->
     <div id="day11" class="day-card">
-        <div class="day-header">
-            <span>Day 11: Departure</span>
-            <span class="date-badge">1/31 (Sat)</span>
+      <div class="day-header">
+        <span>Day 11: Departure</span>
+        <span class="date-badge">1/31 (Sat)</span>
+      </div>
+      <div class="timeline">
+        <div class="event flight">
+          <div class="time">11:00</div>
+          <div class="activity">
+            <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">前往 ORD 機場</a>
+          </div>
+          <div class="details">班機 14:35 起飛，建議 11:30 前抵達機場。</div>
         </div>
-        <div class="timeline">
-            <div class="event flight">
-                <div class="time">11:00</div>
-                <div class="activity">
-                    <a href="https://www.google.com/maps/search/?api=1&query=O'Hare+International+Airport" target="_blank" class="map-link">前往 ORD 機場</a>
-                </div>
-                <div class="details">班機 14:35 起飛，建議 11:30 前抵達機場。</div>
+        <div class="event flight">
+          <div class="time">14:35</div>
+          <div class="activity">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            飛離芝加哥
+          </div>
+          <div class="details">
+            Safe Flight!
+            <div class="flight-path">
+              1/31 14:35 ORD &gt; 20:30 HKG (2/1)<br />
+              2/1 22:55 HKG &gt; 00:35 TPE (2/2)
             </div>
-            <div class="event flight">
-                <div class="time">14:35</div>
-                <div class="activity">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
-                    飛離芝加哥
-                </div>
-                <div class="details">
-                    Safe Flight!
-                    <div class="flight-path">
-                        1/31 14:35 ORD > 20:30 HKG (2/1)<br>
-                        2/1 22:55 HKG > 00:35 TPE (2/2)
-                    </div>
-                </div>
-                <div class="tags"><span class="tag tag-flight">Flight Departure</span></div>
-            </div>
+          </div>
+          <div class="tags"><span class="tag tag-flight">Flight Departure</span></div>
         </div>
+      </div>
     </div>
 
-</div>
+    <!-- ------------------------- EXPENSE TAB ------------------------- -->
+    <div id="expense-card" class="expense-card">
+      <div class="day-header header-expense">
+        <span>記帳（Expense Tracker）</span>
+        <span class="date-badge" style="background:#1e40af;">Split & Settle</span>
+      </div>
 
-<script>
+      <div class="expense-wrap">
+        <div class="exp-container">
+
+          <!-- Header + Summary -->
+          <div class="exp-card">
+            <div class="exp-header">
+              <div>
+                <div class="exp-title">❄️ 芝加哥之旅記帳 🏙️</div>
+                <div class="exp-subtitle">Jan 21 - Jan 31, 2026 • Yunyi's Trip</div>
+              </div>
+              <button class="exp-btn exp-btn-primary" onclick="ExpenseApp.toggleForm()">
+                ➕ 新增支出
+              </button>
+            </div>
+
+            <div class="exp-grid">
+              <div class="exp-stat exp-stat-blue">
+                <div class="exp-stat-head">
+                  <span class="exp-stat-label">實際支出（個人合計）</span>
+                  <span style="font-size:1.4rem;">💵</span>
+                </div>
+                <div class="exp-stat-value" id="exp_totalSpent">$0.00</div>
+                <div class="exp-subtitle" id="exp_totalSpentTWD">≈ NT$ 0</div>
+              </div>
+
+              <div class="exp-stat exp-stat-green">
+                <div class="exp-stat-head">
+                  <span class="exp-stat-label">預算總額（Yunyi）</span>
+                  <span style="font-size:1.4rem;">🎯</span>
+                </div>
+                <div class="exp-stat-value" id="exp_totalBudget">$1,750</div>
+                <div class="exp-subtitle" id="exp_totalBudgetTWD">≈ NT$ 56,000</div>
+              </div>
+
+              <div class="exp-stat exp-stat-purple" id="exp_remainingCard">
+                <div class="exp-stat-head">
+                  <span class="exp-stat-label">剩餘預算</span>
+                  <span style="font-size:1.4rem;">📊</span>
+                </div>
+                <div class="exp-stat-value" id="exp_remaining">$1,750</div>
+                <div class="exp-subtitle" id="exp_remainingStatus">預算內 ✓</div>
+              </div>
+            </div>
+
+            <div class="exp-settle-box" style="margin-top: 1rem;">
+              <div class="exp-settle-title">🧾 結算（誰要給誰）</div>
+              <div id="exp_settlement"></div>
+              <div class="exp-subtitle" style="margin-top:6px;">
+                規則：每筆支出由「支付者」先付，再由「分攤對象」平均分攤；系統最後自動最小化轉帳筆數。
+              </div>
+            </div>
+          </div>
+
+          <!-- Add/Edit Form -->
+          <div class="exp-card exp-hidden" id="exp_formCard">
+            <h2 id="exp_formTitle" style="margin:0 0 12px 0;">➕ 新增支出</h2>
+
+            <div class="exp-form-grid">
+              <div class="exp-form-group">
+                <label>日期</label>
+                <select id="exp_date">
+                  <option value="">選擇日期</option>
+                  <option value="1/21">1/21</option>
+                  <option value="1/22">1/22</option>
+                  <option value="1/23">1/23</option>
+                  <option value="1/24">1/24</option>
+                  <option value="1/25">1/25</option>
+                  <option value="1/26">1/26</option>
+                  <option value="1/27">1/27</option>
+                  <option value="1/28">1/28</option>
+                  <option value="1/29">1/29</option>
+                  <option value="1/30">1/30</option>
+                  <option value="1/31">1/31</option>
+                </select>
+              </div>
+
+              <div class="exp-form-group">
+                <label>類別</label>
+                <select id="exp_category">
+                  <option value="交通">交通</option>
+                  <option value="餐飲" selected>餐飲</option>
+                  <option value="門票娛樂">門票娛樂</option>
+                  <option value="購物">購物</option>
+                  <option value="其他">其他</option>
+                </select>
+              </div>
+
+              <div class="exp-form-group">
+                <label>誰先支付（Paid by）</label>
+                <select id="exp_paidBy"></select>
+              </div>
+
+              <div class="exp-form-group">
+                <label>項目名稱</label>
+                <input type="text" id="exp_item" placeholder="例：Nonnina 晚餐" />
+              </div>
+
+              <div class="exp-form-group">
+                <label>金額 (USD) - 總額</label>
+                <input type="number" id="exp_amount" step="0.01" placeholder="0.00" />
+              </div>
+
+              <div class="exp-form-group" style="grid-column:1/-1;">
+                <label>分攤對象（Split with）</label>
+                <div id="exp_participants" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+                <div class="exp-subtitle" style="margin-top:6px;">
+                  ✔ 勾選的人 = 這筆費用要一起分攤的人
+                </div>
+              </div>
+
+              <div class="exp-form-group" style="grid-column:1/-1;">
+                <label>備註</label>
+                <input type="text" id="exp_notes" placeholder="選填" />
+              </div>
+            </div>
+
+            <div style="display:flex;gap:0.5rem;">
+              <button class="exp-btn exp-btn-primary" onclick="ExpenseApp.saveExpense()">✓ <span id="exp_saveText">新增</span></button>
+              <button class="exp-btn exp-btn-secondary" onclick="ExpenseApp.cancelForm()">✕ 取消</button>
+            </div>
+          </div>
+
+          <!-- Budget Progress -->
+          <div class="exp-card">
+            <h2 style="margin:0 0 12px 0;">預算進度</h2>
+            <div id="exp_budgetProgress"></div>
+          </div>
+
+          <!-- Expense List -->
+          <div class="exp-card">
+            <h2 style="margin:0 0 12px 0;">支出明細</h2>
+            <div id="exp_expenseList"></div>
+          </div>
+
+          <!-- Footer -->
+          <div class="exp-footer">💱 匯率：1 USD = <span id="exp_fxLabel">32</span> TWD •（資料保存在此裝置 localStorage）</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* ----------------------- MAIN TAB NAV ----------------------- */
     function enterApp() {
-        document.getElementById('cover-page').classList.add('hidden');
-        showDay(1); // 直接跳轉到 Day 1
+      document.getElementById("cover-page").classList.add("hidden");
+      showDay(1);
     }
 
     function resetActive() {
-        document.querySelectorAll('.day-card, .info-card, .budget-card').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll(".day-card, .info-card, .budget-card, .expense-card").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
     }
 
     function showDay(dayNum) {
-        resetActive();
-        document.getElementById('day' + dayNum).classList.add('active');
-        // The nav bar starts with 2 items (Info, Budget), so day1 is index 2.
-        document.querySelectorAll('.nav-item')[dayNum + 1].classList.add('active');
-        window.scrollTo(0, 0);
+      resetActive();
+      document.getElementById("day" + dayNum).classList.add("active");
+      // nav items: INFO(0), BUDGET(1), day1(2)...
+      document.querySelectorAll(".nav-item")[dayNum + 1].classList.add("active");
+      window.scrollTo(0, 0);
     }
 
     function showPrep() {
-        resetActive();
-        document.getElementById('prep-card').classList.add('active');
-        document.querySelector('.info-tab').classList.add('active');
-        window.scrollTo(0, 0);
+      resetActive();
+      document.getElementById("prep-card").classList.add("active");
+      document.querySelector(".info-tab").classList.add("active");
+      window.scrollTo(0, 0);
     }
 
     function showBudget() {
-        resetActive();
-        document.getElementById('budget-card').classList.add('active');
-        document.querySelector('.budget-tab').classList.add('active');
-        window.scrollTo(0, 0);
+      resetActive();
+      document.getElementById("budget-card").classList.add("active");
+      document.querySelector(".budget-tab").classList.add("active");
+      window.scrollTo(0, 0);
+    }
+
+    function showExpense() {
+      resetActive();
+      document.getElementById("expense-card").classList.add("active");
+      document.querySelector(".expense-tab").classList.add("active");
+      window.scrollTo(0, 0);
+      // ensure expense app renders once tab is opened
+      if (window.ExpenseApp && typeof ExpenseApp.render === "function") {
+        ExpenseApp.render();
+      }
     }
 
     function toggleDetails() {
-        var details = document.getElementById('budget-details');
-        if (details.style.display === 'none') {
-            details.style.display = 'block';
-        } else {
-            details.style.display = 'none';
-        }
+      var details = document.getElementById("budget-details");
+      if (details.style.display === "none") details.style.display = "block";
+      else details.style.display = "none";
     }
-</script>
+  </script>
 
+  <script>
+    /* ----------------------- EXPENSE APP ----------------------- */
+    const ExpenseApp = (() => {
+      // === CONFIG ===
+      const EXCHANGE_RATE = 32;
+      const PEOPLE = ["Yunyi", "Vivi", "Annie"]; // 你可以改名字或加人
+      const BUDGET = {
+        "交通": 165,
+        "餐飲": 1000,
+        "門票娛樂": 285,
+        "購物": 200,
+        "其他": 100
+      };
+      const DATES = ["1/21","1/22","1/23","1/24","1/25","1/26","1/27","1/28","1/29","1/30","1/31"];
+      const STORAGE_KEY = "chicago_trip_expenses_v2";
+
+      // === STATE ===
+      let expenses = [];
+      let editingId = null;
+
+      // === HELPERS (DOM) ===
+      const $ = (id) => document.getElementById(id);
+
+      function load() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          expenses = raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          expenses = [];
+        }
+      }
+      function persist() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+      }
+
+      // Build paidBy select and participants checkboxes
+      function initPeopleUI() {
+        const paidBy = $("exp_paidBy");
+        const participants = $("exp_participants");
+        if (!paidBy || !participants) return;
+
+        paidBy.innerHTML = "";
+        PEOPLE.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p;
+          opt.textContent = p;
+          paidBy.appendChild(opt);
+        });
+
+        participants.innerHTML = "";
+        PEOPLE.forEach(p => {
+          const label = document.createElement("label");
+          label.style.display = "flex";
+          label.style.alignItems = "center";
+          label.style.gap = "6px";
+          label.style.padding = "6px 10px";
+          label.style.borderRadius = "999px";
+          label.style.border = "1px solid rgba(99,102,241,0.45)";
+          label.style.background = "rgba(2,6,23,0.25)";
+          label.style.cursor = "pointer";
+          label.style.userSelect = "none";
+
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.value = p;
+          cb.checked = true;
+
+          label.appendChild(cb);
+          const span = document.createElement("span");
+          span.textContent = p;
+          label.appendChild(span);
+
+          participants.appendChild(label);
+        });
+
+        $("exp_fxLabel").textContent = EXCHANGE_RATE.toString();
+      }
+
+      function toggleForm() {
+        const form = $("exp_formCard");
+        form.classList.toggle("exp-hidden");
+        if (!form.classList.contains("exp-hidden")) {
+          $("exp_item").focus();
+        }
+      }
+
+      function cancelForm() {
+        $("exp_formCard").classList.add("exp-hidden");
+        resetForm();
+      }
+
+      function resetForm() {
+        $("exp_date").value = "";
+        $("exp_category").value = "餐飲";
+        $("exp_paidBy").value = PEOPLE[0] || "";
+        $("exp_item").value = "";
+        $("exp_amount").value = "";
+        $("exp_notes").value = "";
+        // default: all participants checked
+        document.querySelectorAll("#exp_participants input[type=checkbox]").forEach(cb => cb.checked = true);
+
+        editingId = null;
+        $("exp_formTitle").textContent = "➕ 新增支出";
+        $("exp_saveText").textContent = "新增";
+      }
+
+      function getSelectedParticipants() {
+        const checked = Array.from(document.querySelectorAll("#exp_participants input[type=checkbox]:checked")).map(cb => cb.value);
+        // at least 1
+        return checked.length ? checked : [];
+      }
+
+      function saveExpense() {
+        const date = $("exp_date").value;
+        const category = $("exp_category").value;
+        const paidBy = $("exp_paidBy").value;
+        const item = $("exp_item").value.trim();
+        const amount = parseFloat($("exp_amount").value);
+        const notes = $("exp_notes").value.trim();
+        const participants = getSelectedParticipants();
+
+        if (!date || !item || !amount || isNaN(amount)) {
+          alert("請填寫必填欄位（日期、項目名稱、金額）");
+          return;
+        }
+        if (!paidBy) {
+          alert("請選擇誰先支付（Paid by）");
+          return;
+        }
+        if (!participants.length) {
+          alert("至少要選 1 位分攤對象");
+          return;
+        }
+
+        const payload = {
+          id: editingId ?? Date.now(),
+          date,
+          category,
+          paidBy,
+          participants, // array of people
+          item,
+          amount,
+          notes
+        };
+
+        if (editingId !== null) {
+          const idx = expenses.findIndex(e => e.id === editingId);
+          if (idx >= 0) expenses[idx] = payload;
+        } else {
+          expenses.push(payload);
+        }
+
+        persist();
+        cancelForm();
+        render();
+      }
+
+      function editExpense(id) {
+        const exp = expenses.find(e => e.id === id);
+        if (!exp) return;
+
+        $("exp_date").value = exp.date;
+        $("exp_category").value = exp.category;
+        $("exp_paidBy").value = exp.paidBy;
+        $("exp_item").value = exp.item;
+        $("exp_amount").value = exp.amount;
+        $("exp_notes").value = exp.notes || "";
+
+        const set = new Set(exp.participants || []);
+        document.querySelectorAll("#exp_participants input[type=checkbox]").forEach(cb => {
+          cb.checked = set.has(cb.value);
+        });
+
+        editingId = id;
+        $("exp_formTitle").textContent = "✏️ 編輯支出";
+        $("exp_saveText").textContent = "更新";
+        $("exp_formCard").classList.remove("exp-hidden");
+      }
+
+      function deleteExpense(id) {
+        if (!confirm("確定要刪除這筆支出嗎？")) return;
+        expenses = expenses.filter(e => e.id !== id);
+        persist();
+        render();
+      }
+
+      // === CALCULATION ===
+      // For each expense:
+      // payer pays full amount (credit)
+      // each participant owes amount / participants.length (debit)
+      // Net balance per person = paid - owed
+      // Positive => should receive; Negative => should pay
+      function computeBalances() {
+        const bal = {};
+        PEOPLE.forEach(p => bal[p] = 0);
+
+        expenses.forEach(exp => {
+          const parts = (exp.participants && exp.participants.length) ? exp.participants : [];
+          if (!parts.length) return;
+
+          const share = exp.amount / parts.length;
+
+          // payer paid full
+          if (bal[exp.paidBy] === undefined) bal[exp.paidBy] = 0;
+          bal[exp.paidBy] += exp.amount;
+
+          // participants owe share
+          parts.forEach(p => {
+            if (bal[p] === undefined) bal[p] = 0;
+            bal[p] -= share;
+          });
+        });
+
+        return bal;
+      }
+
+      // Greedy settle: match debtors to creditors
+      function computeSettlement() {
+        const bal = computeBalances();
+        const creditors = [];
+        const debtors = [];
+        const eps = 1e-6;
+
+        Object.entries(bal).forEach(([p, v]) => {
+          if (v > eps) creditors.push({ p, v });
+          else if (v < -eps) debtors.push({ p, v: -v }); // store positive owed
+        });
+
+        creditors.sort((a,b) => b.v - a.v);
+        debtors.sort((a,b) => b.v - a.v);
+
+        const transfers = [];
+        let i = 0, j = 0;
+        while (i < debtors.length && j < creditors.length) {
+          const d = debtors[i];
+          const c = creditors[j];
+          const amt = Math.min(d.v, c.v);
+
+          if (amt > eps) {
+            transfers.push({ from: d.p, to: c.p, amount: amt });
+            d.v -= amt;
+            c.v -= amt;
+          }
+
+          if (d.v <= eps) i++;
+          if (c.v <= eps) j++;
+        }
+
+        return transfers;
+      }
+
+      // === SUMMARY / RENDER ===
+      function getTotalBudget() {
+        return Object.values(BUDGET).reduce((s, v) => s + v, 0);
+      }
+
+      // 개인합계(각 expense에서 payer 상관없이, 'Yunyi'가 참가자에 포함되면 share만큼)
+      function getPersonalTotal(person = "Yunyi") {
+        return expenses.reduce((sum, exp) => {
+          const parts = exp.participants || [];
+          if (!parts.length) return sum;
+          if (!parts.includes(person)) return sum;
+          return sum + (exp.amount / parts.length);
+        }, 0);
+      }
+
+      function getCategoryTotal(category) {
+        // Yunyi 기준으로 분류별 share 합
+        return expenses
+          .filter(exp => exp.category === category)
+          .reduce((sum, exp) => {
+            const parts = exp.participants || [];
+            if (!parts.length) return sum;
+            // category progress는 Yunyi 기준으로 계산 (원하면 "전체"로 바꿀 수 있음)
+            if (!parts.includes("Yunyi")) return sum;
+            return sum + (exp.amount / parts.length);
+          }, 0);
+      }
+
+      function renderSummary() {
+        const totalBudget = getTotalBudget();
+        const yunyiSpent = getPersonalTotal("Yunyi");
+        const remaining = totalBudget - yunyiSpent;
+
+        $("exp_totalSpent").textContent = `$${yunyiSpent.toFixed(2)}`;
+        $("exp_totalSpentTWD").textContent = `≈ NT$ ${(yunyiSpent * EXCHANGE_RATE).toLocaleString()}`;
+
+        $("exp_totalBudget").textContent = `$${totalBudget.toLocaleString()}`;
+        $("exp_totalBudgetTWD").textContent = `≈ NT$ ${(totalBudget * EXCHANGE_RATE).toLocaleString()}`;
+
+        $("exp_remaining").textContent = `$${remaining.toFixed(2)}`;
+
+        const card = $("exp_remainingCard");
+        if (remaining >= 0) {
+          card.className = "exp-stat exp-stat-purple";
+          $("exp_remainingStatus").textContent = "預算內 ✓";
+        } else {
+          card.className = "exp-stat exp-stat-red";
+          $("exp_remainingStatus").textContent = "超支 ⚠";
+        }
+      }
+
+      function renderSettlement() {
+        const box = $("exp_settlement");
+        const transfers = computeSettlement();
+
+        if (!transfers.length) {
+          box.innerHTML = `<div class="exp-settle-line">✅ 目前不用互相轉帳（已平衡 / 尚無支出）</div>`;
+          return;
+        }
+
+        box.innerHTML = transfers.map(t => {
+          return `<div class="exp-settle-line">💸 <strong>${t.from}</strong> → <strong>${t.to}</strong> ： <strong>$${t.amount.toFixed(2)}</strong></div>`;
+        }).join("");
+      }
+
+      function renderBudgetProgress() {
+        const container = $("exp_budgetProgress");
+        container.innerHTML = "";
+
+        Object.keys(BUDGET).forEach(cat => {
+          const spent = getCategoryTotal(cat);
+          const budget = BUDGET[cat];
+          const pct = budget > 0 ? (spent / budget) * 100 : 0;
+
+          let cls = "";
+          if (pct > 100) cls = "red";
+          else if (pct > 80) cls = "yellow";
+
+          const item = document.createElement("div");
+          item.className = "exp-progress-item";
+          item.innerHTML = `
+            <div class="exp-progress-head">
+              <span><strong>${cat}</strong></span>
+              <span>$${spent.toFixed(2)} / $${budget}</span>
+            </div>
+            <div class="exp-progress-bar">
+              <div class="exp-progress-fill ${cls}" style="width:${Math.min(pct, 100)}%"></div>
+            </div>
+            <div class="exp-subtitle" style="margin-top:4px;"> 分攤金額</div>
+          `;
+          container.appendChild(item);
+        });
+      }
+
+      function renderExpenseList() {
+        const container = $("exp_expenseList");
+
+        if (!expenses.length) {
+          container.innerHTML = `
+            <div class="exp-empty">
+              <div class="big">📅</div>
+              <div style="font-size:1.05rem;color:#cbd5e1;font-weight:700;">還沒有任何支出記錄</div>
+              <div style="margin-top:6px;">點擊上方「新增支出」開始記帳</div>
+            </div>
+          `;
+          return;
+        }
+
+        const sorted = [...expenses].sort((a,b) => DATES.indexOf(a.date) - DATES.indexOf(b.date));
+
+        const list = document.createElement("div");
+        list.className = "exp-expense-list";
+
+        sorted.forEach(exp => {
+          const parts = exp.participants || [];
+          const share = parts.length ? (exp.amount / parts.length) : exp.amount;
+
+          const tagParts = parts.length > 1 ? `<span class="exp-tag cyan">👥 ${parts.length}人分攤</span>` : `<span class="exp-tag cyan">個人</span>`;
+          const tagPaid = `<span class="exp-tag">💳 ${exp.paidBy} 先付</span>`;
+          const tagWho = parts.length ? `<span class="exp-tag">分攤：${parts.join(", ")}</span>` : "";
+
+          const div = document.createElement("div");
+          div.className = "exp-item";
+          div.innerHTML = `
+            <div class="exp-item-row">
+              <div style="flex:1;min-width:0;">
+                <div class="exp-tags">
+                  <span class="exp-tag blue">${exp.date}</span>
+                  <span class="exp-tag">${exp.category}</span>
+                  ${tagPaid}
+                  ${tagParts}
+                </div>
+                <div class="exp-name">${escapeHtml(exp.item)}</div>
+                ${exp.notes ? `<div class="exp-notes">${escapeHtml(exp.notes)}</div>` : ""}
+                ${tagWho ? `<div class="exp-notes" style="margin-top:6px;">${tagWho}</div>` : ""}
+              </div>
+
+              <div class="exp-right">
+                <div class="exp-amount">
+                  <div class="exp-amount-main">$${share.toFixed(2)} <span style="font-size:0.75rem;color:#94a3b8;">/人</span></div>
+                  <div class="exp-amount-sub">總額 $${exp.amount.toFixed(2)}</div>
+                  <div class="exp-amount-sub">≈ NT$ ${(share * EXCHANGE_RATE).toFixed(0)} /人</div>
+                </div>
+                <div class="exp-actions">
+                  <button class="exp-icon-btn edit" onclick="ExpenseApp.editExpense(${exp.id})">✏️</button>
+                  <button class="exp-icon-btn del" onclick="ExpenseApp.deleteExpense(${exp.id})">🗑️</button>
+                </div>
+              </div>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+
+        container.innerHTML = "";
+        container.appendChild(list);
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function render() {
+        // only render when expense elements exist (in case tab not loaded yet)
+        if (!$("exp_totalSpent")) return;
+        renderSummary();
+        renderSettlement();
+        renderBudgetProgress();
+        renderExpenseList();
+      }
+
+      // init
+      function boot() {
+        load();
+        initPeopleUI();
+        render();
+      }
+
+      // boot once DOM ready
+      document.addEventListener("DOMContentLoaded", boot);
+
+      // expose public methods used by onclick
+      return {
+        toggleForm,
+        cancelForm,
+        saveExpense,
+        editExpense,
+        deleteExpense,
+        render
+      };
+    })();
+  </script>
 </body>
 </html>
