@@ -425,7 +425,7 @@
                         <span style="font-size: 1.5rem;">🎯</span>
                     </div>
                     <div class="stat-value">$1,750</div>
-                    <div class="stat-subtext">≈ NT$ 56,875</div>
+                    <div class="stat-subtext">≈ NT$ 56,000</div>
                 </div>
 
                 <div class="stat-card" id="remainingCard">
@@ -486,7 +486,7 @@
                     <label>分攤人數</label>
                     <select id="split">
                         <option value="1">1人 (個人)</option>
-                        <option value="2">2人</option>
+                        <option value="2" selected>2人</option>
                         <option value="3">3人</option>
                     </select>
                 </div>
@@ -523,12 +523,12 @@
 
         <!-- Footer -->
         <div class="footer">
-            💱 匯率：1 USD = 32.5 TWD
+            💱 匯率：1 USD = 32 TWD
         </div>
     </div>
 
     <script>
-        const EXCHANGE_RATE = 32.5;
+        const EXCHANGE_RATE = 32;
         const BUDGET = {
             '交通': 165,
             '餐飲': 1000,
@@ -559,7 +559,7 @@
             document.getElementById('category').value = '餐飲';
             document.getElementById('item').value = '';
             document.getElementById('amount').value = '';
-            document.getElementById('split').value = '1';
+            document.getElementById('split').value = '2';
             document.getElementById('notes').value = '';
             editingId = null;
             document.getElementById('formTitle').textContent = '➕ 新增支出';
