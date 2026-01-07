@@ -1729,7 +1729,7 @@
         return Object.values(BUDGET).reduce((s, v) => s + v, 0);
       }
 
-      // 개인합계(각 expense에서 payer 상관없이, 'Yunyi'가 참가자에 포함되면 share만큼)
+      // 個人總計：(每個支出不論誰付，只要 Yunyi 有參與，就加上分攤額)
       function getPersonalTotal(person = "Yunyi") {
         return expenses.reduce((sum, exp) => {
           const parts = exp.participants || [];
@@ -1740,13 +1740,13 @@
       }
 
       function getCategoryTotal(category) {
-        // Yunyi 기준으로 분류별 share 합
+        // Yunyi 基準的分類統計
         return expenses
           .filter(exp => exp.category === category)
           .reduce((sum, exp) => {
             const parts = exp.participants || [];
             if (!parts.length) return sum;
-            // category progress는 Yunyi 기준으로 계산 (원하면 "전체"로 바꿀 수 있음)
+            // category progress is based on Yunyi's share
             if (!parts.includes("Yunyi")) return sum;
             return sum + (exp.amount / parts.length);
           }, 0);
@@ -1891,7 +1891,6 @@
       }
 
       function render() {
-        // only render when expense elements exist (in case tab not loaded yet)
         if (!$("exp_totalSpent")) return;
         renderSummary();
         renderSettlement();
@@ -1909,7 +1908,6 @@
       // boot once DOM ready
       document.addEventListener("DOMContentLoaded", boot);
 
-      // expose public methods used by onclick
       return {
         toggleForm,
         cancelForm,
